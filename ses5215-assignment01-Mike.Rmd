@@ -1,30 +1,44 @@
 ---
-title: "ses5215-assignment01-Mike"
+title: "**Assignment 01 - Group 3**"
 author: "Daniel + Megan + Mike"
-date: "10/21/2021"
-output: html_document
+date: "26 October 2021"
+output: 
+  rmdformats::downcute
 ---
+<style>
+body {
+text-align: justify}
+</style>
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+
+```{r load library, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+library(tidyverse)
+library(tidycensus)
+library(readxl)
+library(knitr)
 ```
 
-## R Markdown
+# research question
+How well does a census tract’s percentage of single-family homes and location relative to metropolitan center predict the average home value and tenure period in homes for the Commonwealth of Massachusetts?
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+# prior research
+While the correlation between diversity of housing types and racial and economic diversity in 	neighborhoods have previously been established, this study investigated a potential 		relationship between housing typology and foreclosures. In fact, they found a positive 
+(but varied) correlation between type and stability—neighborhoods with a range of housing stock had lower foreclosure and sales rates.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+- Chakraborty, Arnab and McMillan, Andrew, “Is Housing Diversity Good for Community Stability?: Evidence from the Housing Crisis,” *Journal of Planning Education and Research*, (2018), https://journals.sagepub.com/doi/10.1177/0739456X18810787 
 
-```{r cars}
-summary(cars)
+# data
+The sample population for this study is the full set of all census tracts in the Commonwealth of Massachusetts. 
+
+The analysis will include the following variables:
+
+- **Percentage of Single-family Homes** (DataCommon - mapc.gov)
+- **Average Housing Tenure of Units** (DataCommon - mapc.gov)
+- **Value of Building Structure with Land**
+- **Percent of Whiteness of Residents in Census Tract** (United States Census Bureau 2020)
+- **Urban Rural Classification** (National Center for Health Statistics 2013)
+
+```{rmessage = FALSE, include = FALSE, echo = FALSE, warning = FALSE}
+
+
 ```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
