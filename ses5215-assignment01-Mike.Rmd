@@ -18,27 +18,20 @@ library(readxl)
 library(knitr)
 ```
 
-# research question
-How well does a census tract’s percentage of single-family homes and location relative to metropolitan center predict the average home value and tenure period in homes for the Commonwealth of Massachusetts?
-
-# prior research
-While the correlation between diversity of housing types and racial and economic diversity in 	neighborhoods have previously been established, this study investigated a potential 		relationship between housing typology and foreclosures. In fact, they found a positive 
-(but varied) correlation between type and stability—neighborhoods with a range of housing stock had lower foreclosure and sales rates.
-
-- Chakraborty, Arnab and McMillan, Andrew, “Is Housing Diversity Good for Community Stability?: Evidence from the Housing Crisis,” *Journal of Planning Education and Research*, (2018), https://journals.sagepub.com/doi/10.1177/0739456X18810787 
-
-# data
-The sample population for this study is the full set of all census tracts in the Commonwealth of Massachusetts. 
-
-The analysis will include the following variables:
-
-- **Percentage of Single-family Homes** (DataCommon - mapc.gov)
-- **Average Housing Tenure of Units** (DataCommon - mapc.gov)
-- **Value of Building Structure with Land**
-- **Percent of Whiteness of Residents in Census Tract** (United States Census Bureau 2020)
-- **Urban Rural Classification** (National Center for Health Statistics 2013)
-
 ```{rmessage = FALSE, include = FALSE, echo = FALSE, warning = FALSE}
-
-
+urban_type <- read_xlsx(path = "data/NCHSURCodes2013.xlsx", 
+                      sheet = "NCHSURCodes2013") %>%
+  mutate(GEOID = case_when(str_length(as.character(`FIPS code`)) == 5 ~ 
+                            as.character(`FIPS code`),
+                          str_length(as.character(`FIPS code`)) == 4 ~
+                            paste("0", `FIPS code`, sep=""),
+                          TRUE ~ "unknown")) %>%
+  mutate(type = case_when(`2013 code` == 1 ~ "Large central metro",
+                          `2013 code` == 2 ~ "Large fringe metro",
+                          `2013 code` == 3 ~ "Medium metro",
+                          `2013 code` == 4 ~ "Small metro",
+                          `2013 code` == 5 ~ "Micropolitan",
+                          `2013 code` == 6 ~ "Non-core",
+                          TRUE ~ "unknown")) %>%
+  select(GEOID, type)
 ```
