@@ -1,30 +1,60 @@
 ---
-title: "ses5215-assignment01-Mike"
+title: "**Assignment 01 - Group 3**"
 author: "Daniel + Megan + Mike"
-date: "10/21/2021"
-output: html_document
+date: "26 October 2021"
+output: 
+  rmdformats::downcute
 ---
+<style>
+body {
+text-align: justify}
+</style>
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+
+```{r load library, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+library(tidyverse)
+library(tidycensus)
+library(readxl)
+library(knitr)
 ```
 
-## R Markdown
+````{r, message = FALSE, include = FALSE, echo = FALSE, warning = FALSE}
+census <- get_decennial(geography = "tract", 
+                        year = 2020,
+                        state = "MA",
+                        #housing units = HUs
+                        #population = pop
+                        variables = c(pop = "P1_001N",
+                                      HUs = "H1_002N",
+                                      ),
+                        output = "wide",
+                        geometry = TRUE)
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r, message = FALSE, include = FALSE, echo = FALSE, warning = FALSE}
+urban_type <- read_xlsx(path = "data/NCHSURCodes2013.xlsx", 
+                      sheet = "NCHSURCodes2013") %>%
+  mutate(GEOID = case_when(str_length(as.character(`FIPS code`)) == 5 ~ 
+                            as.character(`FIPS code`),
+                          str_length(as.character(`FIPS code`)) == 4 ~
+                            paste("0", `FIPS code`, sep=""),
+                          TRUE ~ "unknown")) %>%
+  mutate(type = case_when(`2013 code` == 1 ~ "Large central metro",
+                          `2013 code` == 2 ~ "Large fringe metro",
+                          `2013 code` == 3 ~ "Medium metro",
+                          `2013 code` == 4 ~ "Small metro",
+                          `2013 code` == 5 ~ "Micropolitan",
+                          `2013 code` == 6 ~ "Non-core",
+                          TRUE ~ "unknown")) %>%
+  select(GEOID, type)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r, message = FALSE< echo = FALSE, warning = FALSE}
+#Make Data Column
+data <- left_join(census, acs_age) %>% 
+  left_join(urban_type) %>%
+
+kable(head(data))
+```

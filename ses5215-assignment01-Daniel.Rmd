@@ -9,22 +9,44 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r library, include = FALSE, warning = FALSE, echo = FALSE, message = FALSE}
+library(tidyverse)
+library(tidycensus)
+library(readxl)
+library(knitr)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+vars2010 <- load_variables(2010, "sf1")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+# research question
+How well does a census tract’s percentage of single-family homes and location relative to metropolitan center predict the average home value and tenure period in homes for the Commonwealth of Massachusetts?
+
+# prior research
+While the correlation between diversity of housing types and racial and economic diversity in 	neighborhoods have previously been established, this study investigated a potential 		relationship between housing typology and foreclosures. In fact, they found a positive 
+(but varied) correlation between type and stability—neighborhoods with a range of housing stock had lower foreclosure and sales rates.
+
+- Chakraborty, Arnab and McMillan, Andrew, “Is Housing Diversity Good for Community Stability?: Evidence from the Housing Crisis,” *Journal of Planning Education and Research*, (2018), https://journals.sagepub.com/doi/10.1177/0739456X18810787 
+- Kestens, Yan,  Theriault, Marius, and Des Rosiers  Francois "Heterogeneity in hedonic modelling of house
+prices: looking at buyers’ household profiles," *Journal of Geographical Systems*, (2006), https://link.springer.com/article/10.1007/s10109-005-0011-8
+
+
+Additionally, hedonic modelling of home values have been shown to respond to distance to city center. Distance  correlates with 
+
+
+
+The car time to
+MACs is negatively linked to property values: each additional minute away
+from the city centre lowers the property value of 1.82%. However, this
+relation is not strictly linear but rather follows a U-shaped curve form, as
+shown by the significant integration of the squared form of the variable, with
+a positive sign. Furthermore, this squared term significantly interacts with
+the household income, with a positive sign too. This shows that the higher
+the income, the higher the squared term. Therefore, the devaluation associated with distance is more important for low-income than for high-income
+households,
+
+
+- Chakraborty, Arnab and McMillan, Andrew, “Is Housing Diversity Good for Community Stability?: Evidence from the Housing Crisis,” *Journal of Planning Education and Research*, (2018), https://journals.sagepub.com/doi/10.1177/0739456X18810787
+- Kestens, Yan,  Theriault, Marius, and Des Rosiers  Francois "Heterogeneity in hedonic modelling of house
+prices: looking at buyers’ household profiles," *Journal of Geographical Systems*, (2006), https://link.springer.com/article/10.1007/s10109-005-0011-8
