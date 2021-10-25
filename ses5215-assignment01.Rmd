@@ -45,6 +45,6 @@ The analysis will include the following variables:
 
 - **Percentage of Single-family Homes** (DataCommon - mapc.gov)
 - **Average Housing Tenure of Units** (DataCommon - mapc.gov)
-- **Value of Building Structure with Land**
+- **Value of Building Structure with Land** (DataCommon - mapc.gov)
 - **Percent of Whiteness of Residents in Census Tract** (United States Census Bureau 2020)
 - **Urban Rural Classification** (National Center for Health Statistics 2013)
