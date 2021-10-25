@@ -45,7 +45,7 @@ single_family <- get_acs(geography = "tract",
 
 ```{r}
 
-house_value <- get_acs(geography = "tract", 
+value <- get_acs(geography = "tract", 
                         year = 2019,
                         state = "MA",
                         #aggregate value in dollars of units per structure
@@ -53,6 +53,24 @@ house_value <- get_acs(geography = "tract",
                                       tot_value = "B25080_001"),
                         output = "wide",
                         geometry = TRUE)
+
+value <- value %>%
+  mutate(pct_one_house = round(100 * one_house_valueE / tot_valueE)) %>%
+  filter(tot_valueE > 0)
+```
+
+```{r}
+white <- get_acs(geography = "tract",
+                          state = "Massachusetts",
+                          year = 2019,
+                          output = "wide",
+                          variables = c(tot_pop = 'B01003_001',
+                                        w_pop = 'B02001_002'),
+                          geometry = TRUE)
+
+white <- white %>%
+  mutate(pct_white = round(100 * w_popE / tot_popE)) %>%
+  filter(tot_popE > 0)
 ```
 
 ```{r}
@@ -94,9 +112,11 @@ urban_type <- read_xlsx(path = "data/NCHSURCodes2013.xlsx",
 data <- left_join(census) %>% 
   left_join(urban_type) %>%
   left_join(moved$tot_moved) %>%
-  left_join(house_value) %>%
+  left_join(value$pct_one_house) %>%
   left_join(single_family) %>%
+  left_join(white$pct_white) %>%
   
 
 kable(head(data))
+knitr::kable(data)
 ```
