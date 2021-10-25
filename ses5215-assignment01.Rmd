@@ -42,8 +42,118 @@ The sample population for this study is the full set of all census tracts in the
 
 The analysis will include the following variables:
 
-- **Percentage of Single-family Homes** (DataCommon - mapc.gov)
-- **Average Housing Tenure of Units** (DataCommon - mapc.gov)
-- **Value of Building Structure with Land** (DataCommon - mapc.gov)
-- **Percent of Whiteness of Residents in Census Tract** (United States Census Bureau 2020)
+- **Percentage of Single, Detached Housing Units** (United States Census Bureau 2019)
+- **Geographic Mobility (Amount of People Who Moved in During the Past Year)** (DataCommon - mapc.gov)
+- **Value of Single, Detached Housing Units** (United States Census Bureau 2019)
+- **Percent of White Population in Census Tract** (United States Census Bureau 2020)
 - **Urban Rural Classification** (National Center for Health Statistics 2013)
+
+```{r load library, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+library(tidyverse)
+library(tidycensus)
+library(readxl)
+library(knitr)
+```
+
+
+````{r, message = FALSE, include = FALSE, echo = FALSE, warning = FALSE}
+census <- get_acs(geography = "tract", 
+                        year = 2019,
+                        state = "MA",
+                        #housing units = HUs
+                        #population = pop
+                        variables = c(pop = "B01003_001",
+                                      HUs = "B25001_001"
+                                      ),
+                        output = "wide",
+                        geometry = TRUE)
+```
+
+```{r}
+
+single_family <- get_acs(geography = "tract", 
+                        year = 2019,
+                        state = "MA",
+                        #total of one-detached housing
+                        variables = c(oneunit = "B25024_002"),
+                        output = "wide",
+                        geometry = TRUE)
+```
+
+```{r}
+
+value <- get_acs(geography = "tract", 
+                        year = 2019,
+                        state = "MA",
+                        #aggregate value in dollars of units per structure
+                        variables = c(one_house_value = "B25080_002",
+                                      tot_value = "B25080_001"),
+                        output = "wide",
+                        geometry = TRUE)
+
+value <- value %>%
+  mutate(pct_one_house = round(100 * one_house_valueE / tot_valueE)) %>%
+  filter(tot_valueE > 0)
+```
+
+```{r}
+white <- get_acs(geography = "tract",
+                          state = "Massachusetts",
+                          year = 2019,
+                          output = "wide",
+                          variables = c(tot_pop = 'B01003_001',
+                                        w_pop = 'B02001_002'),
+                          geometry = TRUE)
+
+white <- white %>%
+  mutate(pct_white = round(100 * w_popE / tot_popE)) %>%
+  filter(tot_popE > 0)
+```
+
+```{r}
+moved <- get_acs(geography = "tract", 
+                 year = 2019,
+                 state = "Massachusetts",  
+                 variables = c(same_county = "B07001_033", 
+                               diff_state = "B07001_065", 
+                               same_state = "B07001_049", 
+                               abroad = "B07001_081"), 
+                 output = "wide", 
+                 quiet = TRUE)
+
+moved$tot_moved <- moved$same_countyE + moved$same_stateE + moved$diff_stateE + moved$abroadE
+
+```
+
+
+```{r, message = FALSE, include = FALSE, echo = FALSE, warning = FALSE}
+urban_type <- read_xlsx(path = "data/NCHSURCodes2013.xlsx", 
+                      sheet = "NCHSURCodes2013") %>%
+  mutate(GEOID = case_when(str_length(as.character(`FIPS code`)) == 5 ~ 
+                            as.character(`FIPS code`),
+                          str_length(as.character(`FIPS code`)) == 4 ~
+                            paste("0", `FIPS code`, sep=""),
+                          TRUE ~ "unknown")) %>%
+  mutate(type = case_when(`2013 code` == 1 ~ "Large central metro",
+                          `2013 code` == 2 ~ "Large fringe metro",
+                          `2013 code` == 3 ~ "Medium metro",
+                          `2013 code` == 4 ~ "Small metro",
+                          `2013 code` == 5 ~ "Micropolitan",
+                          `2013 code` == 6 ~ "Non-core",
+                          TRUE ~ "unknown")) %>%
+  select(GEOID, type)
+```
+
+```{r, message = FALSE< echo = FALSE, warning = FALSE}
+#Make Data Column
+data <- left_join(census) %>% 
+  left_join(urban_type) %>%
+  left_join(moved$tot_moved) %>%
+  left_join(value$pct_one_house) %>%
+  left_join(single_family) %>%
+  left_join(white$pct_white) %>%
+  
+
+kable(head(data))
+knitr::kable(data)
+```
