@@ -31,15 +31,7 @@ Additionally, hedonic modelling of home values have been shown to respond to dis
 
 
 
-The car time to
-MACs is negatively linked to property values: each additional minute away
-from the city centre lowers the property value of 1.82%. However, this
-relation is not strictly linear but rather follows a U-shaped curve form, as
-shown by the significant integration of the squared form of the variable, with
-a positive sign. Furthermore, this squared term significantly interacts with
-the household income, with a positive sign too. This shows that the higher
-the income, the higher the squared term. Therefore, the devaluation associated with distance is more important for low-income than for high-income
-households,
+The travel time by car to metropolitan actvity centers (MACs) are negatively linked to property values: each additional minute away from the city centre lowers the property value of 1.82%. However, this relation is not strictly linear but rather follows a U-shaped curve form, as shown by the significant integration of the squared form of the variable, with a positive sign. Furthermore, this squared term significantly interacts with the household income, with a positive sign too. This shows that the higher the income, the higher the squared term. Therefore, the devaluation associated with distance is more important for low-income than for high-income households,
 
 
 - Chakraborty, Arnab and McMillan, Andrew, “Is Housing Diversity Good for Community Stability?: Evidence from the Housing Crisis,” *Journal of Planning Education and Research*, (2018), https://journals.sagepub.com/doi/10.1177/0739456X18810787
