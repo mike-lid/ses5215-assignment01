@@ -18,7 +18,22 @@ library(readxl)
 library(knitr)
 ```
 
-```{rmessage = FALSE, include = FALSE, echo = FALSE, warning = FALSE}
+````{r, message = FALSE, include = FALSE, echo = FALSE, warning = FALSE}
+census <- get_decennial(geography = "tract", 
+                        year = 2020,
+                        state = "MA",
+                        #housing units = HUs
+                        #population = pop
+                        variables = c(pop = "P1_001N",
+                                      HUs = "H1_002N",
+                                      ),
+                        output = "wide",
+                        geometry = TRUE)
+
+```
+
+
+```{r, message = FALSE, include = FALSE, echo = FALSE, warning = FALSE}
 urban_type <- read_xlsx(path = "data/NCHSURCodes2013.xlsx", 
                       sheet = "NCHSURCodes2013") %>%
   mutate(GEOID = case_when(str_length(as.character(`FIPS code`)) == 5 ~ 
@@ -34,4 +49,12 @@ urban_type <- read_xlsx(path = "data/NCHSURCodes2013.xlsx",
                           `2013 code` == 6 ~ "Non-core",
                           TRUE ~ "unknown")) %>%
   select(GEOID, type)
+```
+
+```{r, message = FALSE< echo = FALSE, warning = FALSE}
+#Make Data Column
+data <- left_join(census, acs_age) %>% 
+  left_join(urban_type) %>%
+
+kable(head(data))
 ```
