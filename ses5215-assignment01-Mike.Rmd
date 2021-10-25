@@ -18,17 +18,55 @@ library(readxl)
 library(knitr)
 ```
 
+
 ````{r, message = FALSE, include = FALSE, echo = FALSE, warning = FALSE}
-census <- get_decennial(geography = "tract", 
-                        year = 2020,
+census <- get_acs(geography = "tract", 
+                        year = 2019,
                         state = "MA",
                         #housing units = HUs
                         #population = pop
-                        variables = c(pop = "P1_001N",
-                                      HUs = "H1_002N",
+                        variables = c(pop = "B01003_001",
+                                      HUs = "B25001_001"
                                       ),
                         output = "wide",
                         geometry = TRUE)
+```
+
+```{r}
+
+single_family <- get_acs(geography = "tract", 
+                        year = 2019,
+                        state = "MA",
+                        #total of one-detached housing
+                        variables = c(oneunit = "B25024_002"),
+                        output = "wide",
+                        geometry = TRUE)
+```
+
+```{r}
+
+house_value <- get_acs(geography = "tract", 
+                        year = 2019,
+                        state = "MA",
+                        #aggregate value in dollars of units per structure
+                        variables = c(one_house_value = "B25080_002",
+                                      tot_value = "B25080_001"),
+                        output = "wide",
+                        geometry = TRUE)
+```
+
+```{r}
+moved <- get_acs(geography = "tract", 
+                 year = 2019,
+                 state = "Massachusetts",  
+                 variables = c(same_county = "B07001_033", 
+                               diff_state = "B07001_065", 
+                               same_state = "B07001_049", 
+                               abroad = "B07001_081"), 
+                 output = "wide", 
+                 quiet = TRUE)
+
+moved$tot_moved <- moved$same_countyE + moved$same_stateE + moved$diff_stateE + moved$abroadE
 
 ```
 
@@ -53,8 +91,12 @@ urban_type <- read_xlsx(path = "data/NCHSURCodes2013.xlsx",
 
 ```{r, message = FALSE< echo = FALSE, warning = FALSE}
 #Make Data Column
-data <- left_join(census, acs_age) %>% 
+data <- left_join(census) %>% 
   left_join(urban_type) %>%
+  left_join(moved$tot_moved) %>%
+  left_join(house_value) %>%
+  left_join(single_family) %>%
+  
 
 kable(head(data))
 ```
