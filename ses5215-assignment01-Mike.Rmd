@@ -109,14 +109,16 @@ urban_type <- read_xlsx(path = "data/NCHSURCodes2013.xlsx",
 
 ```{r, message = FALSE< echo = FALSE, warning = FALSE}
 #Make Data Column
-data <- left_join(census) %>% 
-  left_join(urban_type) %>%
+data <- left_join(census,urban_type) %>%
   left_join(moved$tot_moved) %>%
   left_join(value$pct_one_house) %>%
   left_join(single_family) %>%
-  left_join(white$pct_white) %>%
-  
+  left_join(white$pct_white)
+```
+
+```{r}
 
 kable(head(data))
-knitr::kable(data)
+
+
 ```

@@ -11,7 +11,7 @@ output:
 ---
 <style>
 body {
-text-align: justify}
+text-align: left}
 </style>
 
 <style>
@@ -19,13 +19,6 @@ body {
 font-family: arial}
 </style>
 
-
-```{r load library, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
-library(tidyverse)
-library(tidycensus)
-library(readxl)
-library(knitr)
-```
 
 # research question
 How well does a census tract’s percentage of single-family homes and location relative to metropolitan center predict the average home value and tenure period in homes for the Commonwealth of Massachusetts?
@@ -43,7 +36,7 @@ The sample population for this study is the full set of all census tracts in the
 The analysis will include the following variables:
 
 - **Percentage of Single, Detached Housing Units** (United States Census Bureau 2019)
-- **Geographic Mobility (Amount of People Who Moved in During the Past Year)** (DataCommon - mapc.gov)
+- **Geographic Mobility (Amount of People Who Moved in During the Past Year)** (United States Census Bureau 2019)
 - **Value of Single, Detached Housing Units** (United States Census Bureau 2019)
 - **Percent of White Population in Census Tract** (United States Census Bureau 2020)
 - **Urban Rural Classification** (National Center for Health Statistics 2013)
@@ -69,7 +62,7 @@ census <- get_acs(geography = "tract",
                         geometry = TRUE)
 ```
 
-```{r}
+```{r, message = FALSE, include = FALSE, echo = FALSE, warning = FALSE}
 
 single_family <- get_acs(geography = "tract", 
                         year = 2019,
@@ -80,7 +73,7 @@ single_family <- get_acs(geography = "tract",
                         geometry = TRUE)
 ```
 
-```{r}
+```{r, message = FALSE, include = FALSE, echo = FALSE, warning = FALSE}
 
 value <- get_acs(geography = "tract", 
                         year = 2019,
@@ -96,7 +89,7 @@ value <- value %>%
   filter(tot_valueE > 0)
 ```
 
-```{r}
+```{r, message = FALSE, include = FALSE, echo = FALSE, warning = FALSE}
 white <- get_acs(geography = "tract",
                           state = "Massachusetts",
                           year = 2019,
@@ -110,7 +103,7 @@ white <- white %>%
   filter(tot_popE > 0)
 ```
 
-```{r}
+```{r, message = FALSE, include = FALSE, echo = FALSE, warning = FALSE}
 moved <- get_acs(geography = "tract", 
                  year = 2019,
                  state = "Massachusetts",  
@@ -144,16 +137,3 @@ urban_type <- read_xlsx(path = "data/NCHSURCodes2013.xlsx",
   select(GEOID, type)
 ```
 
-```{r, message = FALSE< echo = FALSE, warning = FALSE}
-#Make Data Column
-data <- left_join(census) %>% 
-  left_join(urban_type) %>%
-  left_join(moved$tot_moved) %>%
-  left_join(value$pct_one_house) %>%
-  left_join(single_family) %>%
-  left_join(white$pct_white) %>%
-  
-
-kable(head(data))
-knitr::kable(data)
-```
