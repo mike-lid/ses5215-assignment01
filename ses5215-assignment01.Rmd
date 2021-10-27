@@ -38,8 +38,8 @@ The analysis will include the following variables:
 CONTINUOUS
 
 - Percentage of Single, Detached Housing Units (United States Census Bureau 2019)
-- Geographic Mobility (Amount of People Who Moved in During the Past Year) (United States Census Bureau 2019)
-- Value of Single, Detached Housing Units (United States Census Bureau 2019)
+- Geographic Mobility (percent of People Who Moved in During the Past Year) (United States Census Bureau 2019)
+- Average value of Single, Detached Housing Units (United States Census Bureau 2019)
 
 CATEGORICAL
 
@@ -47,89 +47,56 @@ CATEGORICAL
 - Urban Rural Classification (National Center for Health Statistics 2013)
 
 # data table
-The dataset includes 1478 census tracks.
+The dataset includes 1478 census tracks. Note - the housing value is only available for 337 out of your 1478 census tracts - I'm filtering to only include those, which substantially reduces your sample size.
 
-```{r load library, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+```{r load library, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(tidycensus)
 library(readxl)
 library(knitr)
 ```
 
-````{r, message = FALSE, include = FALSE, echo = FALSE, warning = FALSE}
+No need to call get_acs() 5 times - just get all the variables in one shot.
+
+Creating a separate variable with the GEOID for the county, which is the first five digits of the travt GEOID.
+
+````{r, message = FALSE, warning = FALSE}
+acs_vars <- c(pop = "B01003_001",
+          HUs = "B25001_001",
+          oneunit = "B25024_002",
+          one_house_value = "B25080_002",
+          tot_value = "B25080_001",
+          w_pop = 'B02001_002',
+          moved_same_county = "B07001_033",
+          moved_diff_state = "B07001_065",
+          moved_same_state = "B07001_049",
+          moved_abroad = "B07001_081")
+
 census <- get_acs(geography = "tract", 
                         year = 2019,
                         state = "MA",
-                        #housing units = HUs
-                        #population = pop
-                        variables = c(pop = "B01003_001",
-                                      HUs = "B25001_001"
-                                      ),
-                        output = "wide",
-                        geometry = TRUE)
+                        variables = acs_vars,
+                        output = "wide") %>%
+  mutate(pct_sf_home = oneunitE / HUsE) %>%
+  mutate(pct_moved = (moved_same_countyE +
+           moved_diff_stateE +
+           moved_same_stateE +
+           moved_abroadE) / HUsE) %>%
+  mutate(avg_sf_home_val = one_house_valueE / oneunitE) %>%
+  mutate(pct_w = w_popE / popE) %>%
+  mutate(maj_white = ifelse(pct_w > 0.5, TRUE, FALSE)) %>%
+  select(GEOID, pct_sf_home, pct_moved, avg_sf_home_val, maj_white) %>%
+  filter(!is.na(avg_sf_home_val)) %>%
+  mutate(GEOID_county = substr(GEOID, 1, 5))
 ```
 
-```{r, include = FALSE, message = FALSE, echo = FALSE, warning = FALSE}
+give the GEOID column you're creating the same name as the county GEOID in your census dataset.
 
-single_family <- get_acs(geography = "tract", 
-                        year = 2019,
-                        state = "MA",
-                        #total of one-detached housing
-                        variables = c(oneunit = "B25024_002"),
-                        output = "wide",
-                        geometry = FALSE)
-```
-
-```{r, include = FALSE, message = FALSE, echo = FALSE, warning = FALSE}
-
-value <- get_acs(geography = "tract", 
-                        year = 2019,
-                        state = "MA",
-                        #aggregate value in dollars of units per structure
-                        variables = c(one_house_value = "B25080_002",
-                                      tot_value = "B25080_001"),
-                        output = "wide",
-                        geometry = FALSE)
-
-value <- value %>%
-  mutate(pct_one_house = round(100 * one_house_valueE / tot_valueE)) %>%
-  filter(tot_valueE > 0)
-```
-
-```{r, include = FALSE, message = FALSE, echo = FALSE, warning = FALSE}
-white <- get_acs(geography = "tract",
-                          state = "Massachusetts",
-                          year = 2019,
-                          output = "wide",
-                          variables = c(tot_pop = 'B01003_001',
-                                        w_pop = 'B02001_002'),
-                          geometry = FALSE)
-
-white <- white %>%
-  mutate(pct_white = round(100 * w_popE / tot_popE)) %>%
-  filter(tot_popE > 0)
-```
-
-```{r, include = FALSE, message = FALSE, echo = FALSE, warning = FALSE}
-moved <- get_acs(geography = "tract", 
-                 year = 2019,
-                 state = "Massachusetts",  
-                 variables = c(same_county = "B07001_033", 
-                               diff_state = "B07001_065", 
-                               same_state = "B07001_049", 
-                               abroad = "B07001_081"), 
-                 output = "wide", 
-                 quiet = FALSE)
-
-moved$tot_moved <- moved$same_countyE + moved$same_stateE + moved$diff_stateE + moved$abroadE
-
-```
-
-
-```{r, message = FALSE, include = FALSE, echo = FALSE, warning = FALSE}
+```{r, message = FALSE, warning = FALSE}
 urban_type <- read_xlsx(path = "data/NCHSURCodes2013.xlsx", 
                       sheet = "NCHSURCodes2013") %>%
-  mutate(GEOID = case_when(str_length(as.character(`FIPS code`)) == 5 ~ 
+  mutate(GEOID_county = 
+           case_when(str_length(as.character(`FIPS code`)) == 5 ~ 
                             as.character(`FIPS code`),
                           str_length(as.character(`FIPS code`)) == 4 ~
                             paste("0", `FIPS code`, sep=""),
@@ -141,19 +108,15 @@ urban_type <- read_xlsx(path = "data/NCHSURCodes2013.xlsx",
                           `2013 code` == 5 ~ "Micropolitan",
                           `2013 code` == 6 ~ "Non-core",
                           TRUE ~ "unknown")) %>%
-  select(GEOID, type)
+  select(GEOID_county, type)
 ```
 
-```{r, include = FALSE, message = FALSE, echo = FALSE, warning = FALSE}
-#Make Data Column
-data <- left_join(census,urban_type) %>%
-  left_join(moved) %>%
-  left_join(value) %>%
-  left_join(single_family) %>%
-  left_join(white)
-```
+join the types to the census tracts
 
-```{r, message = FALSE, echo = FALSE, warning = FALSE}
+view the first few rows of this combined data set.
+
+```{r, message = FALSE, warning = FALSE}
+data <- left_join(census,urban_type) 
 
 kable(head(data))
 
