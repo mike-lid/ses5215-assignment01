@@ -275,8 +275,8 @@ font-family: arial}
 <p>CONTINUOUS</p>
 <ul>
 <li>Percentage of Single, Detached Housing Units (United States Census Bureau 2019)</li>
-<li>Geographic Mobility (Amount of People Who Moved in During the Past Year) (United States Census Bureau 2019)</li>
-<li>Value of Single, Detached Housing Units (United States Census Bureau 2019)</li>
+<li>Geographic Mobility (percent of People Who Moved in During the Past Year) (United States Census Bureau 2019)</li>
+<li>Average value of Single, Detached Housing Units (United States Census Bureau 2019)</li>
 </ul>
 <p>CATEGORICAL</p>
 <ul>
@@ -286,258 +286,73 @@ font-family: arial}
 </div>
 <div id="data-table" class="section level1">
 <h1>data table</h1>
-<p>The dataset includes 1478 census tracks.</p>
+<p>The dataset includes 1478 census tracks. Note - the housing value is only available for 337 out of your 1478 census tracts, so we have filtered the data to only include those, which substantially reduces the sample size.</p>
 <table>
-<colgroup>
-<col width="3%" />
-<col width="14%" />
-<col width="1%" />
-<col width="1%" />
-<col width="1%" />
-<col width="1%" />
-<col width="1%" />
-<col width="3%" />
-<col width="3%" />
-<col width="3%" />
-<col width="3%" />
-<col width="3%" />
-<col width="3%" />
-<col width="2%" />
-<col width="2%" />
-<col width="2%" />
-<col width="4%" />
-<col width="4%" />
-<col width="3%" />
-<col width="3%" />
-<col width="4%" />
-<col width="2%" />
-<col width="2%" />
-<col width="2%" />
-<col width="2%" />
-<col width="2%" />
-<col width="2%" />
-<col width="2%" />
-<col width="8%" />
-</colgroup>
 <thead>
 <tr class="header">
 <th align="left">GEOID</th>
-<th align="left">NAME</th>
-<th align="right">popE</th>
-<th align="right">popM</th>
-<th align="right">HUsE</th>
-<th align="right">HUsM</th>
+<th align="right">pct_sf_home</th>
+<th align="right">pct_moved</th>
+<th align="right">avg_sf_home_val</th>
+<th align="left">maj_white</th>
+<th align="left">GEOID_county</th>
 <th align="left">type</th>
-<th align="right">same_countyE</th>
-<th align="right">same_countyM</th>
-<th align="right">diff_stateE</th>
-<th align="right">diff_stateM</th>
-<th align="right">same_stateE</th>
-<th align="right">same_stateM</th>
-<th align="right">abroadE</th>
-<th align="right">abroadM</th>
-<th align="right">tot_moved</th>
-<th align="right">one_house_valueE</th>
-<th align="right">one_house_valueM</th>
-<th align="right">tot_valueE</th>
-<th align="right">tot_valueM</th>
-<th align="right">pct_one_house</th>
-<th align="right">oneunitE</th>
-<th align="right">oneunitM</th>
-<th align="right">tot_popE</th>
-<th align="right">tot_popM</th>
-<th align="right">w_popE</th>
-<th align="right">w_popM</th>
-<th align="right">pct_white</th>
-<th align="left">geometry</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">25017350500</td>
-<td align="left">Census Tract 3505, Middlesex County, Massachusetts</td>
-<td align="right">1593</td>
-<td align="right">145</td>
-<td align="right">724</td>
-<td align="right">53</td>
-<td align="left">NA</td>
-<td align="right">147</td>
-<td align="right">59</td>
-<td align="right">75</td>
-<td align="right">42</td>
-<td align="right">125</td>
-<td align="right">64</td>
-<td align="right">51</td>
-<td align="right">48</td>
-<td align="right">398</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">148</td>
-<td align="right">49</td>
-<td align="right">1593</td>
-<td align="right">145</td>
-<td align="right">1475</td>
-<td align="right">137</td>
-<td align="right">93</td>
-<td align="left">MULTIPOLYGON (((-71.12725 4…</td>
+<td align="left">25027732302</td>
+<td align="right">0.2649573</td>
+<td align="right">0.2962963</td>
+<td align="right">140626.9</td>
+<td align="left">TRUE</td>
+<td align="left">25027</td>
+<td align="left">Medium metro</td>
 </tr>
 <tr class="even">
-<td align="left">25017342600</td>
-<td align="left">Census Tract 3426, Middlesex County, Massachusetts</td>
-<td align="right">4746</td>
-<td align="right">449</td>
-<td align="right">1725</td>
-<td align="right">84</td>
-<td align="left">NA</td>
-<td align="right">451</td>
-<td align="right">296</td>
-<td align="right">33</td>
-<td align="right">28</td>
-<td align="right">90</td>
-<td align="right">68</td>
-<td align="right">124</td>
-<td align="right">170</td>
-<td align="right">698</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">282</td>
-<td align="right">91</td>
-<td align="right">4746</td>
-<td align="right">449</td>
-<td align="right">2704</td>
-<td align="right">411</td>
-<td align="right">57</td>
-<td align="left">MULTIPOLYGON (((-71.04758 4…</td>
+<td align="left">25001010100</td>
+<td align="right">0.3952991</td>
+<td align="right">0.0741453</td>
+<td align="right">366285.4</td>
+<td align="left">TRUE</td>
+<td align="left">25001</td>
+<td align="left">Small metro</td>
 </tr>
 <tr class="odd">
-<td align="left">25021412200</td>
-<td align="left">Census Tract 4122, Norfolk County, Massachusetts</td>
-<td align="right">3938</td>
-<td align="right">224</td>
-<td align="right">1545</td>
-<td align="right">82</td>
-<td align="left">NA</td>
-<td align="right">149</td>
-<td align="right">108</td>
-<td align="right">60</td>
-<td align="right">57</td>
-<td align="right">82</td>
-<td align="right">73</td>
-<td align="right">0</td>
-<td align="right">12</td>
-<td align="right">291</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">943</td>
-<td align="right">85</td>
-<td align="right">3938</td>
-<td align="right">224</td>
-<td align="right">3485</td>
-<td align="right">301</td>
-<td align="right">88</td>
-<td align="left">MULTIPOLYGON (((-71.24727 4…</td>
+<td align="left">25001015200</td>
+<td align="right">0.8540233</td>
+<td align="right">0.0332037</td>
+<td align="right">199807.0</td>
+<td align="left">TRUE</td>
+<td align="left">25001</td>
+<td align="left">Small metro</td>
 </tr>
 <tr class="even">
-<td align="left">25021410100</td>
-<td align="left">Census Tract 4101, Norfolk County, Massachusetts</td>
-<td align="right">7044</td>
-<td align="right">457</td>
-<td align="right">2531</td>
-<td align="right">131</td>
-<td align="left">NA</td>
-<td align="right">322</td>
-<td align="right">215</td>
-<td align="right">282</td>
-<td align="right">202</td>
-<td align="right">118</td>
-<td align="right">90</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">723</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">1513</td>
-<td align="right">126</td>
-<td align="right">7044</td>
-<td align="right">457</td>
-<td align="right">6316</td>
-<td align="right">588</td>
-<td align="right">90</td>
-<td align="left">MULTIPOLYGON (((-71.28944 4…</td>
+<td align="left">25001014700</td>
+<td align="right">0.8324324</td>
+<td align="right">0.1147854</td>
+<td align="right">185064.2</td>
+<td align="left">TRUE</td>
+<td align="left">25001</td>
+<td align="left">Small metro</td>
 </tr>
 <tr class="odd">
-<td align="left">25009250700</td>
-<td align="left">Census Tract 2507, Essex County, Massachusetts</td>
-<td align="right">5074</td>
-<td align="right">550</td>
-<td align="right">1617</td>
-<td align="right">67</td>
-<td align="left">NA</td>
-<td align="right">283</td>
-<td align="right">327</td>
-<td align="right">0</td>
-<td align="right">17</td>
-<td align="right">0</td>
-<td align="right">17</td>
-<td align="right">105</td>
-<td align="right">142</td>
-<td align="right">388</td>
-<td align="right">40521000</td>
-<td align="right">23209934</td>
-<td align="right">140049700</td>
-<td align="right">41088324</td>
-<td align="right">29</td>
-<td align="right">228</td>
-<td align="right">85</td>
-<td align="right">5074</td>
-<td align="right">550</td>
-<td align="right">1904</td>
-<td align="right">465</td>
-<td align="right">38</td>
-<td align="left">MULTIPOLYGON (((-71.16562 4…</td>
+<td align="left">25017337101</td>
+<td align="right">0.6613516</td>
+<td align="right">0.0842825</td>
+<td align="right">447660.2</td>
+<td align="left">TRUE</td>
+<td align="left">25017</td>
+<td align="left">Large fringe metro</td>
 </tr>
 <tr class="even">
-<td align="left">25025070101</td>
-<td align="left">Census Tract 701.01, Suffolk County, Massachusetts</td>
-<td align="right">7409</td>
-<td align="right">622</td>
-<td align="right">4661</td>
-<td align="right">249</td>
-<td align="left">NA</td>
-<td align="right">651</td>
-<td align="right">197</td>
-<td align="right">789</td>
-<td align="right">264</td>
-<td align="right">670</td>
-<td align="right">305</td>
-<td align="right">257</td>
-<td align="right">122</td>
-<td align="right">2367</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">40</td>
-<td align="right">34</td>
-<td align="right">7409</td>
-<td align="right">622</td>
-<td align="right">4527</td>
-<td align="right">511</td>
-<td align="right">61</td>
-<td align="left">MULTIPOLYGON (((-71.06423 4…</td>
+<td align="left">25023504101</td>
+<td align="right">0.8820850</td>
+<td align="right">0.2869433</td>
+<td align="right">532236.4</td>
+<td align="left">TRUE</td>
+<td align="left">25023</td>
+<td align="left">Large fringe metro</td>
 </tr>
 </tbody>
 </table>

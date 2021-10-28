@@ -40,7 +40,7 @@ single_family <- get_acs(geography = "tract",
                         #total of one-detached housing
                         variables = c(oneunit = "B25024_002"),
                         output = "wide",
-                        geometry = TRUE)
+                        geometry = FALSE)
 ```
 
 ```{r}
@@ -52,7 +52,7 @@ value <- get_acs(geography = "tract",
                         variables = c(one_house_value = "B25080_002",
                                       tot_value = "B25080_001"),
                         output = "wide",
-                        geometry = TRUE)
+                        geometry = FALSE)
 
 value <- value %>%
   mutate(pct_one_house = round(100 * one_house_valueE / tot_valueE)) %>%
@@ -66,7 +66,7 @@ white <- get_acs(geography = "tract",
                           output = "wide",
                           variables = c(tot_pop = 'B01003_001',
                                         w_pop = 'B02001_002'),
-                          geometry = TRUE)
+                          geometry = FALSE)
 
 white <- white %>%
   mutate(pct_white = round(100 * w_popE / tot_popE)) %>%
@@ -82,7 +82,7 @@ moved <- get_acs(geography = "tract",
                                same_state = "B07001_049", 
                                abroad = "B07001_081"), 
                  output = "wide", 
-                 quiet = TRUE)
+                 quiet = FALSE)
 
 moved$tot_moved <- moved$same_countyE + moved$same_stateE + moved$diff_stateE + moved$abroadE
 
@@ -110,10 +110,10 @@ urban_type <- read_xlsx(path = "data/NCHSURCodes2013.xlsx",
 ```{r, message = FALSE< echo = FALSE, warning = FALSE}
 #Make Data Column
 data <- left_join(census,urban_type) %>%
-  left_join(moved$tot_moved) %>%
-  left_join(value$pct_one_house) %>%
+  left_join(moved) %>%
+  left_join(value) %>%
   left_join(single_family) %>%
-  left_join(white$pct_white)
+  left_join(white)
 ```
 
 ```{r}
