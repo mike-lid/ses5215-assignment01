@@ -19,7 +19,6 @@ body {
 font-family: arial}
 </style>
 
-
 # research question
 How well does a census tract’s percentage of single-family homes and location relative to metropolitan center predict the average home value and tenure period in homes for the Commonwealth of Massachusetts?
 
@@ -47,20 +46,17 @@ CATEGORICAL
 - Urban Rural Classification (National Center for Health Statistics 2013)
 
 # data table
-The dataset includes 1478 census tracks. Note - the housing value is only available for 337 out of your 1478 census tracts - I'm filtering to only include those, which substantially reduces your sample size.
+The dataset includes 1478 census tracks. Note - the housing value is only available for 337 out of your 1478 census tracts, so we have filtered the data to only include those, which substantially reduces the sample size.
 
-```{r load library, message=FALSE, warning=FALSE}
+```{r load library, message=FALSE, warning=FALSE, echo = FALSE, include = FALSE}
 library(tidyverse)
 library(tidycensus)
 library(readxl)
 library(knitr)
 ```
 
-No need to call get_acs() 5 times - just get all the variables in one shot.
 
-Creating a separate variable with the GEOID for the county, which is the first five digits of the travt GEOID.
-
-````{r, message = FALSE, warning = FALSE}
+````{r, message = FALSE, include = FALSE, echo = FALSE, warning = FALSE}
 acs_vars <- c(pop = "B01003_001",
           HUs = "B25001_001",
           oneunit = "B25024_002",
@@ -90,9 +86,9 @@ census <- get_acs(geography = "tract",
   mutate(GEOID_county = substr(GEOID, 1, 5))
 ```
 
-give the GEOID column you're creating the same name as the county GEOID in your census dataset.
 
-```{r, message = FALSE, warning = FALSE}
+```{r, message = FALSE, warning = FALSE, echo = FALSE, include = FALSE}
+#give the GEOID column you're creating the same name as the county GEOID in your census dataset.
 urban_type <- read_xlsx(path = "data/NCHSURCodes2013.xlsx", 
                       sheet = "NCHSURCodes2013") %>%
   mutate(GEOID_county = 
@@ -111,11 +107,10 @@ urban_type <- read_xlsx(path = "data/NCHSURCodes2013.xlsx",
   select(GEOID_county, type)
 ```
 
-join the types to the census tracts
+```{r, message = FALSE, warning = FALSE,echo = FALSE}
+#join the types to the census tracts
+#view the first few rows of this combined data set.
 
-view the first few rows of this combined data set.
-
-```{r, message = FALSE, warning = FALSE}
 data <- left_join(census,urban_type) 
 
 kable(head(data))
