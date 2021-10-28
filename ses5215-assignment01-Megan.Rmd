@@ -18,7 +18,7 @@ acs_vars <- load_variables(2019, "acs5")
 ```
 
 ```{r}
-moved <- get_acs(geography = "tract", state = "Massachusetts",  
+tot_moved <- get_acs(geography = "tract", state = "Massachusetts",  
                          variables = c(same_county = "B07001_033", diff_state = "B07001_065", 
                                        same_state = "B07001_049", abroad = "B07001_081"), output = 
                           "wide", quiet = TRUE)
@@ -26,7 +26,44 @@ moved <- get_acs(geography = "tract", state = "Massachusetts",
 
 ```{r}
 
-moved$tot_moved <- moved$same_countyE + moved$same_stateE + moved$diff_stateE + moved$abroadE
+tot_moved$tot_moved <- moved$same_countyE + moved$same_stateE + moved$diff_stateE + moved$abroadE
+
   
+```
+### Assignment 2
+### Running T Test - Confidence Interval
+```{r}
+pct_moved_t_test <- t.test(data$pct_moved)
+pct_sf_home_t_test <- t.test(data$pct_sf_home)
+avg_sf_home_val_t_test <- t.test(data$avg_sf_home_val)
+```
+
+## Quartiles
+```{r}
+pct_moved_quartiles <- quantile(data$pct_moved, na.rm = TRUE)
+pct_sf_home_quartiles <- quantile(data$pct_sf_home, na.rm = TRUE)
+avg_sf_home_val_quartiles <- quantile(data$avg_sf_home_val, na.rm = TRUE)
+```
+
+## Standard Deviation
+```{r}
+pct_moved_st_dev <- sd(data$pct_moved, na.rm = TRUE)
+pct_sf_home_st_dev <- sd(data$pct_moved, na.rm = TRUE)
+avg_sf_home_val_st_dev <- sd(data$avg_sf_home_val, na.rm = TRUE)
+
+
+```
+
+## Histograms
+```{r}
+pct_moved_hist <- ggplot(data) +
+  geom_histogram(aes(x = pct_moved))
+
+pct_moved_hist
+
+pct_sf_home_hist <- ggplot(data) +
+  geom_histogram(aes(x = pct_sf_home))
+
+pct_sf_home_hist
 ```
 
