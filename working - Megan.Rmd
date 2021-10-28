@@ -5,7 +5,7 @@ date: "10/21/2021"
 output: html_document
 ---
 
-```{r}
+```{r Loading libraries}
 
 library(tidyverse)
 library(tidycensus)
@@ -43,6 +43,7 @@ avg_sf_home_val_t_test <- t.test(data$avg_sf_home_val)
 pct_moved_quartiles <- quantile(data$pct_moved, na.rm = TRUE)
 pct_sf_home_quartiles <- quantile(data$pct_sf_home, na.rm = TRUE)
 avg_sf_home_val_quartiles <- quantile(data$avg_sf_home_val, na.rm = TRUE)
+
 ```
 
 ## Standard Deviation
@@ -67,7 +68,7 @@ pct_sf_home_hist <- ggplot(data) +
 pct_sf_home_hist
 
 avg_sf_home_val_hist <- ggplot(data) +
-  geom_histogram(aes(x = avg_sf_home_val))
+  geom_histogram(aes(x = avg_sf_home_val), bins = 30)
 
 avg_sf_home_val_hist
 ```
