@@ -45,7 +45,7 @@ CATEGORICAL
 - Majority White or Not Majority White Population (United States Census Bureau 2020)
 - Urban Rural Classification (National Center for Health Statistics 2013)
 
-# data table
+## data table
 The dataset includes 1478 census tracks. Note - the housing value is only available for 337 out of your 1478 census tracts, so we have filtered the data to only include those, which substantially reduces the sample size.
 
 ```{r load library, message=FALSE, warning=FALSE, echo = FALSE, include = FALSE}
@@ -116,3 +116,22 @@ data <- left_join(census,urban_type)
 kable(head(data))
 
 ```
+This dataset includes 337 variables.
+
+# descriptive statistics
+
+## continuous variables
+The continuous variables we use are: 1) percentage of single, detached housing units, 2) geographic mobility, 3) average value of single, detached housing units.
+
+### percent of single, detached housing units in a census tract
+insert
+
+### geographic mobility
+insert
+
+### average value of single, detached housing units
+insert
+
+## categorical Variables
+The categoricala variables we use are: 1) Majority White or Non-Majority White Classification of Census Tract and 2) Urban-Rural Classification
+
