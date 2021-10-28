@@ -65,5 +65,10 @@ pct_sf_home_hist <- ggplot(data) +
   geom_histogram(aes(x = pct_sf_home))
 
 pct_sf_home_hist
+
+avg_sf_home_val_hist <- ggplot(data) +
+  geom_histogram(aes(x = avg_sf_home_val))
+
+avg_sf_home_val_hist
 ```
 
