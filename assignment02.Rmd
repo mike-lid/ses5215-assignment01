@@ -3,11 +3,7 @@ title: "**Assignment 01 - Group 3**"
 author: "Daniel + Megan + Mike"
 date: "26 October 2021"
 output: 
-  html_document:
-    theme: readable
-    toc: true
-    toc_depth: 3
-    toc_float:  true
+  rmdformats::downcute
 ---
 <style>
 body {
