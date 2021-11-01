@@ -156,33 +156,38 @@ cont_summary <- tibble(
                "Percent of Residents Who Arrived in Past Year (%)", 
                "Average Home Value for Single, Detached Housing Units"),
   
-  `sample mean` = c(pct_moved_t_test$estimate*100,
+  `sample mean` = c(pct_moved_t_test$estimate,
                     pct_sf_home_t_test$estimate*100,
                     avg_sf_home_val_t_test$estimate),
   
   `population mean (95% confidence) - low` = 
-    c(pct_moved_t_test$conf.int[1]*100,
+    c(pct_moved_t_test$conf.int[1],
       pct_sf_home_t_test$conf.int[1]*100,
        avg_sf_home_val_t_test$conf.int[1]),
   
   `population mean (95% confidence) - high` =
-    c(pct_moved_t_test$conf.int[2]*100,
+    c(pct_moved_t_test$conf.int[2],
       pct_sf_home_t_test$conf.int[2]*100,
       avg_sf_home_val_t_test$conf.int[2]),
   
-  median = c(pct_moved_quartiles[3]*100,
+  median = c(pct_moved_quartiles[3],
              pct_sf_home_quartiles[3]*100,
              avg_sf_home_val_quartiles[3]),
   
-  `interquartile range` = c((pct_moved_quartiles[4] - pct_moved_quartiles[2])*100,
+  `interquartile range` = c((pct_moved_quartiles[4] - pct_moved_quartiles[2]),
                             (pct_sf_home_quartiles[4] - pct_sf_home_quartiles[2])*100,
                             avg_sf_home_val_quartiles[4] - avg_sf_home_val_quartiles[2]),
   
-  `standard deviation` = c(pct_moved_st_dev*100,
+  `standard deviation` = c(pct_moved_st_dev,
                           pct_sf_home_st_dev*100,
                           avg_sf_home_val_st_dev))
+df <- cont_summary 
 
-kable(cont_summary, digits = 0)
+library(formattable)
+cont_summary2 <- currency(df$3, digits = 0L)
+
+
+kable(cont_summary, digits = 2)
 ```
 
 
