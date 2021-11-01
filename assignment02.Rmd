@@ -190,6 +190,41 @@ cont_summary2 <- currency(df$3, digits = 0L)
 kable(cont_summary, digits = 2)
 ```
 
+```{r}
+pct_moved_hist <- ggplot(data) +
+  geom_histogram(aes(x = pct_moved))
+
+
+pct_sf_home_hist <- ggplot(data) +
+  geom_histogram(aes(x = pct_sf_home))
+
+
+avg_sf_home_val_hist <- ggplot(data) +
+  geom_histogram(aes(x = avg_sf_home_val), bins = 30)
+
+
+pretty_pct_moved_hist <- pct_moved_hist +
+  theme_bw() +
+  scale_x_continuous(name = "Percent of people who arrived\nin past year") +
+  scale_y_continuous(name = "Number of census tracts") +
+  theme(axis.text.x = element_text(angle = 90))
+
+pretty_avg_sf_home_val_hist <- avg_sf_home_val_hist +
+  theme_bw() + 
+  scale_x_continuous(name = "Average home value for\nsingle, detached housing units") +
+  scale_y_continuous(name = "Number of census tracts") +
+  theme(axis.text.x = element_text(angle = 90))
+
+pretty_pct_sf_home_hist = pct_sf_home_hist +
+  theme_bw() +
+  scale_x_continuous(name = "Percent of single, detached\nhousing units") +
+  scale_y_continuous(name = "Number of census tracts") +
+  theme(axis.text.x = element_text(angle = 90)) 
+
+grid.arrange(pretty_pct_moved_hist, pretty_avg_sf_home_val_hist, pretty_pct_sf_home_hist,
+             ncol = 3)
+```
+
 
 ## categorical Variables
 The categorical variables we use are: 1) Majority White or Non-Majority White Classification of Census Tract and 2) Urban-Rural Classification
