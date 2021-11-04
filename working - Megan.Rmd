@@ -73,3 +73,15 @@ avg_sf_home_val_hist <- ggplot(data) +
 avg_sf_home_val_hist
 ```
 
+### Correlation - Home Value Correlated with Geographic Mobility
+```{r}
+cor.test(~ avg_sf_home_val + pct_moved, data = data)
+```
+Running the correlation shows that there is a positive correlation between the two variables-- the percent of people who moved to a census tract and the average value of single family homes. With 95 percent confidence, the value of single-family homes is correlated with the percent of people moving to a census tract.
+
+### Correlation - Home Value Correlated with Geographic Mobility
+```{r}
+cor.test(~ avg_sf_home_val + pct_sf_home, data = data)
+
+```
+
