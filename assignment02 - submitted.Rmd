@@ -196,11 +196,7 @@ cont_summary <- tibble(
 kable(cont_summary, digits = 1)
 ```
 
-<<<<<<< HEAD
-```{r adding histograms, message = FALSE, warning = FALSE, echo = FALSE}
-=======
 ```{r, message = FALSE, echo = FALSE, warning = FALSE}
->>>>>>> d0fc47c4f0a4fee9857bfd6ac3d2cab3c3554e17
 pct_moved_hist <- ggplot(data) +
   geom_histogram(aes(x = pct_moved))
 
