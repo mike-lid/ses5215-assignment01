@@ -162,31 +162,38 @@ cont_summary <- tibble(
   
   `sample mean` = c(pct_moved_t_test$estimate,
                     pct_sf_home_t_test$estimate*100,
-                    paste("$", prettyNum(avg_sf_home_val_t_test$estimate, big.mark = ","))),
+                    paste("$", prettyNum(avg_sf_home_val_t_test$estimate, big.mark = ",", digits = 6))
+                    ),
   
   `population mean (95% confidence) - low` = 
     c(pct_moved_t_test$conf.int[1],
       pct_sf_home_t_test$conf.int[1]*100,
-      avg_sf_home_val_t_test$conf.int[1]),
+      paste("$", prettyNum(avg_sf_home_val_t_test$conf.int[1], big.mark = ",", digits = 6))
+      ),
   
   `population mean (95% confidence) - high` =
     c(pct_moved_t_test$conf.int[2],
       pct_sf_home_t_test$conf.int[2]*100,
-      avg_sf_home_val_t_test$conf.int[2]),
+      paste("$", prettyNum(avg_sf_home_val_t_test$conf.int[2], big.mark = ",", digits = 6))
+      ),
   
   median = c(pct_moved_quartiles[3],
              pct_sf_home_quartiles[3]*100,
-             avg_sf_home_val_quartiles[3]),
+             paste("$", prettyNum(avg_sf_home_val_quartiles[3], big.mark = ",", digits = 6))
+             ),
   
   `interquartile range` = c((pct_moved_quartiles[4] - pct_moved_quartiles[2]),
                             (pct_sf_home_quartiles[4] - pct_sf_home_quartiles[2])*100,
-                            avg_sf_home_val_quartiles[4] - avg_sf_home_val_quartiles[2]),
+                            paste("$", prettyNum(avg_sf_home_val_quartiles[4] - avg_sf_home_val_quartiles[2], big.mark = ",", digits = 6))
+                            ),
   
   `standard deviation` = c(pct_moved_st_dev,
                           pct_sf_home_st_dev*100,
-                          avg_sf_home_val_st_dev))
+                          paste("$", prettyNum(avg_sf_home_val_st_dev, big.mark = ",", digits = 6))
+                          )
+  )
 
-kable(cont_summary, digits = 2)
+kable(cont_summary, digits = 1)
 ```
 
 ```{r, message = FALSE, echo = FALSE, warning = FALSE}
