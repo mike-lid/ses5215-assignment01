@@ -317,3 +317,30 @@ summary(sf_model)
 ```
 
 
+```{r}
+t.test(avg_sf_home_val ~ maj_white, data)
+```
+
+```{r}
+white_model <- lm(avg_sf_home_val ~ maj_white, data = data)
+
+summary(white_model)
+```
+
+
+
+```{r}
+data <- data %>%
+  mutate(type = as.factor(type)) %>%
+  mutate(type = relevel(type, "Large central metro"))
+
+type_model <- lm(avg_sf_home_val ~ type, data)
+
+summary(type_model)
+```
+
+
+
+
+
+
