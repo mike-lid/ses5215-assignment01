@@ -167,24 +167,24 @@ cont_summary <- tibble(
   `population mean (95% confidence) - low` = 
     c(pct_moved_t_test$conf.int[1],
       pct_sf_home_t_test$conf.int[1]*100,
-      paste("$", prettyNum(avg_sf_home_val_t_test$conf.int[1], big.mark = ","))),
+      avg_sf_home_val_t_test$conf.int[1]),
   
   `population mean (95% confidence) - high` =
     c(pct_moved_t_test$conf.int[2],
       pct_sf_home_t_test$conf.int[2]*100,
-      paste("$", prettyNum(avg_sf_home_val_t_test$conf.int[2], big.mark = ","))),
+      avg_sf_home_val_t_test$conf.int[2]),
   
   median = c(pct_moved_quartiles[3],
              pct_sf_home_quartiles[3]*100,
-             paste("$", prettyNum(avg_sf_home_val_quartiles[3], big.mark = ","))),
+             avg_sf_home_val_quartiles[3]),
   
   `interquartile range` = c((pct_moved_quartiles[4] - pct_moved_quartiles[2]),
                             (pct_sf_home_quartiles[4] - pct_sf_home_quartiles[2])*100,
-                            paste("$", prettyNum((avg_sf_home_val_quartiles[4] - avg_sf_home_val_quartiles[2]), big.mark = ","))),
+                            avg_sf_home_val_quartiles[4] - avg_sf_home_val_quartiles[2]),
   
   `standard deviation` = c(pct_moved_st_dev,
                           pct_sf_home_st_dev*100,
-                          paste("$", prettyNum(avg_sf_home_val_dev, big.mark = ","))
+                          avg_sf_home_val_st_dev))
 
 kable(cont_summary, digits = 2)
 ```
