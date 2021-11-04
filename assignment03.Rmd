@@ -196,11 +196,8 @@ cont_summary <- tibble(
 kable(cont_summary, digits = 1)
 ```
 
-<<<<<<< HEAD
 ```{r adding histograms, message = FALSE, warning = FALSE, echo = FALSE}
-=======
-```{r, message = FALSE, echo = FALSE, warning = FALSE}
->>>>>>> d0fc47c4f0a4fee9857bfd6ac3d2cab3c3554e17
+
 pct_moved_hist <- ggplot(data) +
   geom_histogram(aes(x = pct_moved))
 
@@ -341,5 +338,47 @@ ggplot(categorical_summary_type) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90)) 
 ```
+```{r}
+cor.test(~ avg_sf_home_val+ pct_moved, data = data)
 
+```
+
+```{r}
+cor.test(~ avg_sf_home_val+ pct_sf_home, data = data)
+```
+
+```{r}
+moved_model <- lm(avg_sf_home_val ~ pct_moved, data = data)
+
+summary(moved_model)
+```
+
+```{r}
+sf_model <- lm(avg_sf_home_val ~ pct_sf_home, data = data)
+
+summary(sf_model)
+```
+
+
+```{r}
+t.test(avg_sf_home_val ~ maj_white, data)
+```
+
+```{r}
+white_model <- lm(avg_sf_home_val ~ maj_white, data = data)
+
+summary(white_model)
+```
+
+
+
+```{r}
+data <- data %>%
+  mutate(type = as.factor(type)) %>%
+  mutate(type = relevel(type, "Large central metro"))
+
+type_model <- lm(avg_sf_home_val ~ type, data)
+
+summary(type_model)
+```
 
