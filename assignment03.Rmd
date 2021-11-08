@@ -338,6 +338,7 @@ ggplot(categorical_summary_type) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90)) 
 ```
+
 ```{r}
 cor.test(~ avg_sf_home_val+ pct_moved, data = data)
 
