@@ -299,29 +299,25 @@ ggplot(categorical_summary_type) +
 ```{r}
 cor.test(~ avg_sf_home_val+ pct_moved, data = data)
 
+moved_model <- lm(avg_sf_home_val ~ pct_moved, data = data)
+
+summary(moved_model)
+
 ```
 
 ```{r}
 cor.test(~ avg_sf_home_val+ pct_sf_home, data = data)
-```
-```{r}
-moved_model <- lm(avg_sf_home_val ~ pct_moved, data = data)
 
-summary(moved_model)
-```
-
-```{r}
 sf_model <- lm(avg_sf_home_val ~ pct_sf_home, data = data)
 
 summary(sf_model)
 ```
 
 
-```{r}
-t.test(avg_sf_home_val ~ maj_white, data)
-```
 
 ```{r}
+t.test(avg_sf_home_val ~ maj_white, data)
+
 white_model <- lm(avg_sf_home_val ~ maj_white, data = data)
 
 summary(white_model)
