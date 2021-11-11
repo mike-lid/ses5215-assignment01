@@ -335,6 +335,13 @@ type_model <- lm(avg_sf_home_val ~ type, data)
 summary(type_model)
 ```
 
+## Multivariate Regression
+
+```{r}
+full_model <- lm(avg_sf_home_val ~ pct_moved + pct_sf_home + maj_white + type, data)
+
+summary(full_model)
+```
 
 
 
