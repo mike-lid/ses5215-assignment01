@@ -1,9 +1,10 @@
 ---
-title: "**Assignment 03 - Group 3**"
+title: "**How Well the Percentage of Single-Family Homes in a Census Tract Can Reveal Other Aspects**"
 author: "Daniel + Megan + Mike"
-date: "26 October 2021"
+date: "11 November 2021"
 output: 
-  rmdformats::downcute
+  rmdformats::downcute:
+  code_folding: hide
 ---
 <style>
 body {
@@ -15,17 +16,17 @@ body {
 font-family: arial}
 </style>
 
-# research question
+# **research question**
 How well does a census tract’s percentage of single-family homes and location relative to metropolitan center predict the average home value and tenure period in homes for the Commonwealth of Massachusetts?
 
-# prior research
+# **prior research**
 While the correlation between diversity of housing types and racial and economic diversity in	neighborhoods have previously been established, this study investigated a potential 	relationship between housing typology and foreclosures. In fact, they found a positive (but varied) correlation between type and stability—neighborhoods with a range of housing stock had lower foreclosure and sales rates (Chakraborty et al 2018). Additionally, hedonic modelling of home values have been shown to respond to distance to city center. Longer distance from the metropolitan center correlates with lower property values in the magnitude of 1.82%. However, this relationship is highly income dependent, where devaluation associated with distance is higher for low-income individuals than for high-income individuals (Kestens et al. 2006).
 
 - Chakraborty, Arnab and McMillan, Andrew, “Is Housing Diversity Good for Community Stability?: Evidence from the Housing Crisis,” *Journal of Planning Education and Research*, (2018), https://journals.sagepub.com/doi/10.1177/0739456X18810787
 - Kestens, Yan,  Theriault, Marius, and Des Rosiers  Francois "Heterogeneity in hedonic modelling of house
 prices: looking at buyers’ household profiles," *Journal of Geographical Systems*, (2006), https://link.springer.com/article/10.1007/s10109-005-0011-8
 
-# data
+# **data**
 The sample population for this study is the full set of all census tracts in the Commonwealth of Massachusetts. 
 
 The analysis will include the following variables:
@@ -41,7 +42,7 @@ CATEGORICAL
 - Majority White or Not Majority White Population (United States Census Bureau 2020)
 - Urban Rural Classification (National Center for Health Statistics 2013)
 
-## data table
+## **data table**
 The dataset includes 1478 census tracks. Note - the housing value is only available for 337 out of your 1478 census tracts, so we have filtered the data to only include those, which substantially reduces the sample size.
 
 ```{r load library, message=FALSE, warning=FALSE, echo = FALSE, include = FALSE}
@@ -49,13 +50,9 @@ library(tidyverse)
 library(tidycensus)
 library(readxl)
 library(knitr)
-library(survey)
 library(sf)
 library(gridExtra)
-library(jtools)
-library(weights)
-library(srvyr)
-library(ipumsr)
+library(DT)
 ```
 
 
@@ -121,10 +118,14 @@ kable(head(data))
 ```
 This dataset includes 337 variables.
 
-# descriptive statistics
+# **descriptive statistics**
 
-## continuous variables
-The continuous variables we use are: 1) percentage of single, detached housing units, 2) geographic mobility, 3) average value of single, detached housing units.
+## **continuous variables**
+The continuous variables we use are: 
+
+- percentage of single, detached housing units
+- geographic mobility
+- average value of single, detached housing units
 
 ```{r t_tests, message = FALSE, echo = FALSE, warning = FALSE}
 pct_moved_t_test <- t.test(data$pct_moved)
@@ -154,44 +155,97 @@ avg_sf_home_val_hist <- ggplot(data) +
   geom_histogram(aes(x = avg_sf_home_val))
 ```
 
-```{r summary table continuous}
+```{r summary table continuous, message = FALSE, echo = FALSE, warning = FALSE}
 cont_summary <- tibble(
-  variable = c("Percent of Single, Detached Housing Units", 
+  variable = c(
                "Percent of Residents Who Arrived in Past Year", 
+               "Percent of Single, Detached Housing Units",
                "Average Home Value for Single, Detached Housing Units"),
   
-  `sample mean` = c(pct_moved_t_test$estimate,
-                    pct_sf_home_t_test$estimate,
-                    avg_sf_home_val_t_test$estimate),
+  `sample mean` = c(
+                    paste(round(pct_moved_t_test$estimate, 2), "%", sep=""),
+                    paste(round(pct_sf_home_t_test$estimate*100, 0), "%", sep=""),
+                    paste("$", prettyNum(avg_sf_home_val_t_test$estimate, big.mark = ",", digits = 6))
+                    ),
   
   `population mean (95% confidence) - low` = 
-    c(pct_moved_t_test$conf.int[1],
-      pct_sf_home_t_test$conf.int[1],
-       avg_sf_home_val_t_test$conf.int[1]),
+    c(
+      paste(round(pct_moved_t_test$conf.int[1], 2), "%", sep=""),
+      paste(round(pct_sf_home_t_test$conf.int[1]*100, 0), "%", sep=""),
+      paste("$", prettyNum(avg_sf_home_val_t_test$conf.int[1], big.mark = ",", digits = 6))
+      ),
   
   `population mean (95% confidence) - high` =
-    c(pct_moved_t_test$conf.int[2],
-      pct_sf_home_t_test$conf.int[2],
-      avg_sf_home_val_t_test$conf.int[2]),
+    c(
+      paste(round(pct_moved_t_test$conf.int[2], 2), "%", sep=""),
+      paste(round(pct_sf_home_t_test$conf.int[2]*100, 0), "%", sep=""),
+      paste("$", prettyNum(avg_sf_home_val_t_test$conf.int[2], big.mark = ",", digits = 6))
+      ),
   
-  median = c(pct_moved_quartiles[3],
-             pct_sf_home_quartiles[3],
-             avg_sf_home_val_quartiles[3]),
+  median = c(
+             paste(round(pct_moved_quartiles[3], 2), "%", sep=""),
+             paste(round(100*pct_sf_home_quartiles[3], 0), "%", sep=""),
+             paste("$", prettyNum(avg_sf_home_val_quartiles[3], big.mark = ",", digits = 6))
+             ),
   
-  `interquartile range` = c(pct_moved_quartiles[4] - pct_moved_quartiles[2],
-                            pct_sf_home_quartiles[4] - pct_sf_home_quartiles[2],
-                            avg_sf_home_val_quartiles[4] - avg_sf_home_val_quartiles[2]),
+  `interquartile range` = c(
+                            paste(round((pct_moved_quartiles[4] - pct_moved_quartiles[2]), 2), "%", sep=""),
+                            paste(round((pct_sf_home_quartiles[4] - pct_sf_home_quartiles[2])*100, 0), "%", sep=""),
+                            paste("$", prettyNum(avg_sf_home_val_quartiles[4] - avg_sf_home_val_quartiles[2], big.mark = ",", digits = 6))
+                            ),
   
-  `standard deviation` = c(pct_moved_st_dev,
-                          pct_sf_home_st_dev,
-                          avg_sf_home_val_st_dev))
+  `standard deviation` = c(
+                          paste(round((pct_moved_st_dev), 2), "%", sep=""),
+                          paste(round(100*pct_sf_home_st_dev, 0), "%", sep=""),
+                          paste("$", prettyNum(avg_sf_home_val_st_dev, big.mark = ",", digits = 6))
+                          )
+  )
 
-kable(cont_summary, digits = 0)
+kable(cont_summary, digits = 1)
+```
+
+```{r adding histograms, message = FALSE, warning = FALSE, echo = FALSE}
+
+pct_moved_hist <- ggplot(data) +
+  geom_histogram(aes(x = pct_moved))
+
+
+pct_sf_home_hist <- ggplot(data) +
+  geom_histogram(aes(x = pct_sf_home))
+
+
+avg_sf_home_val_hist <- ggplot(data) +
+  geom_histogram(aes(x = avg_sf_home_val), bins = 30)
+
+
+pretty_pct_moved_hist <- pct_moved_hist +
+  theme_bw() +
+  scale_x_continuous(name = "Percent of people who arrived\nin past year") +
+  scale_y_continuous(name = "Number of census tracts") +
+  theme(axis.text.x = element_text(angle = 90))
+
+pretty_avg_sf_home_val_hist <- avg_sf_home_val_hist +
+  theme_bw() + 
+  scale_x_continuous(name = "Average home value for\nsingle, detached housing units") +
+  scale_y_continuous(name = "Number of census tracts") +
+  theme(axis.text.x = element_text(angle = 90))
+
+pretty_pct_sf_home_hist = pct_sf_home_hist +
+  theme_bw() +
+  scale_x_continuous(name = "Percent of single, detached\nhousing units") +
+  scale_y_continuous(name = "Number of census tracts") +
+  theme(axis.text.x = element_text(angle = 90)) 
+
+grid.arrange(pretty_pct_moved_hist, pretty_avg_sf_home_val_hist, pretty_pct_sf_home_hist,
+             ncol = 3)
 ```
 
 
-## categorical Variables
-The categorical variables we use are: 1) Majority White or Non-Majority White Classification of Census Tract and 2) Urban-Rural Classification
+## **categorical variables**
+The categorical variables we use are:
+
+- Majority White or Non-Majority White Classification of Census Tract
+- Urban-Rural Classification
 
 ```{r t_tersts, message = FALSE, echo = FALSE, warning = FALSE, include = FALSE}
 pct_wm <- t.test(data$maj_white == "TRUE")
@@ -204,8 +258,8 @@ pct_micro <- t.test(data$type == "Micropolitan")
 pct_rural <- t.test(data$type == "Non-core")
 ```
 
-### census tracts with a majority white population
-insert description
+### _**census tracts with a majority white population**_
+Unsurprisingly, the majority of the census tracts in Massachusetts contain a majority white population. 
 
 ```{r majority white summary, message = FALSE, echo = FALSE, warning = FALSE}
 categorical_summary_white <- tibble(`Racial Composition of Census Tract` = 
@@ -240,12 +294,12 @@ ggplot(categorical_summary_white) +
   theme_bw()
 ```
 
-### urban-rural classifications
-insert text here
+### _**urban-rural classifications**_
+Most census tracts had an urban-rural classification as "large fringe metro."
 
 ```{r urban rural summary, message = FALSE, echo = FALSE, warning = FALSE}
-categorical_summary_type <- tibble(`County type` = 
-                              c("Larch central metro",
+categorical_summary_type <- tibble(`County Type of Census Tract` = 
+                              c("Large central metro",
                                 "Large fringe metro",
                                 "Medium metro",
                                 "Small metro",
@@ -278,57 +332,71 @@ kable(categorical_summary_type, digits = 0)
 
 ```{r urban rural plot, message = FALSE, echo = FALSE, warning = FALSE}
 ggplot(categorical_summary_type) +
-  geom_bar(aes(x = `County type`, 
+  geom_bar(aes(x = `County Type of Census Tract`, 
                y = `Sample proportion`),
            stat = "identity") +
-  geom_errorbar(aes(x = `County type`, 
+  geom_errorbar(aes(x = `County Type of Census Tract`, 
                y = `Sample proportion`,
                ymin = `95-percent confidence - low`,
                ymax = `95-percent confidence - high`),
            stat = "identity") +
-  scale_y_continuous(name = "Percent of counties",
+  scale_y_continuous(name = "Percent of Census Tracts",
                      breaks = c(0, 10, 20, 30, 40, 50, 60, 70),
                      labels = c("0", "10%", "20%", "30%", "40%", "50%", "60%", "70%")) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90)) 
 ```
+# **bivariate analysis**
+Our dependent variable is the census tracts' average home value. Our independent variables are the percentage of single family homes in a census tract, the census tract's location relative to metropolitan center, and the percent of people who moved in the past year in a given census tract. 
 
+## **correlations / regression on continuous variables**
 
+### The Correlation Between the Average Home Value and Percent of the Population that Moved in a Given Census Tract. 
 
+The test shows that there is a statistically significant positive correlation between the two variables with a 95% confidence interval of .118 to .321.
 
-```{r}
+```{r, message = FALSE, echo = FALSE, warning = FALSE}
 cor.test(~ avg_sf_home_val+ pct_moved, data = data)
-
-```
-
-```{r}
-cor.test(~ avg_sf_home_val+ pct_sf_home, data = data)
 
 moved_model <- lm(avg_sf_home_val ~ pct_moved, data = data)
 
 summary(moved_model)
+
 ```
 
-```{r}
+### The Correlation Between the Average Home Value and Percent of the Single-Family Homes in a Given Census Tract. 
+
+The test shows that there is a statistically significant negative correlation between the two variables with a 95% confidence interval of -.336 to -.134.
+
+
+```{r, message = FALSE, echo = FALSE, warning = FALSE}
+cor.test(~ avg_sf_home_val+ pct_sf_home, data = data)
+
 sf_model <- lm(avg_sf_home_val ~ pct_sf_home, data = data)
 
 summary(sf_model)
 ```
 
+## **difference of means / regression on continuous variables**
 
-```{r}
+
+### The Difference of Means Between the Average Home Value and Designation of Majority White Population in a Given Census Tract.
+
+The test shows that there is a statistically significant negative correlation between the two variables with a 95% confidence interval of 232008.8 to -121138.1.
+
+```{r, message = FALSE, echo = FALSE, warning = FALSE}
 t.test(avg_sf_home_val ~ maj_white, data)
-```
 
-```{r}
 white_model <- lm(avg_sf_home_val ~ maj_white, data = data)
 
 summary(white_model)
 ```
 
+### The Difference of Means Between the Average Home Value and the Urban-Rural Classification in a Given Census Tract. 
 
+The test shows that there is a statistically significant correlation with some types of urban-rural classifications, but not all. The housing values in large fringe metros and micropolitan areas are not significantly different than those in large central metros. 
 
-```{r}
+```{r, message = FALSE, echo = FALSE, warning = FALSE}
 data <- data %>%
   mutate(type = as.factor(type)) %>%
   mutate(type = relevel(type, "Large central metro"))
@@ -337,9 +405,3 @@ type_model <- lm(avg_sf_home_val ~ type, data)
 
 summary(type_model)
 ```
-
-
-
-
-
-
