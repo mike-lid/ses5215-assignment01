@@ -448,7 +448,7 @@ In our bivariate analyses, we determined that census tracts with a lower percent
 
 To really get to the separate effects each of these variables might have on average price of single, detached dwewlling units in census tracts, we used a multivariate regression to contextualize these relationships at once. From the summary, we can see that four variables were statistically-significant at the 95% confidence interval in effecting average value of a single, detached dwelling unit in a census tract: 1) percentage of single, detached dwelling units, 2) the percentage of population that moved in the past year, 3) the classification as majority white, and 4) classification as a medium metro area. If we wanted to reduce our confidence interval to 90%, we could then include the classification of a small metro area as statistically significant. However, both large fringe metro areas and micropolitan areas were not found to be statistically significant. 
 
-_*So what are the specific relationships between median housing unit value and each independent variable?*_
+_*So what are the specific relationships between average price of single, detached dwelling units and each independent variable?*_
 
 - Percentage of Single, Detached Dwelling Units: INSERT DESCRIPTION
 - Percentage of Population that Moved in the Past Year: INSERT DESCRIPTION
