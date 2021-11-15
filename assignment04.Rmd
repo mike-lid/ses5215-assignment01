@@ -54,6 +54,8 @@ library(knitr)
 library(sf)
 library(gridExtra)
 library(DT)
+library(pander)
+library(stargazer)
 ```
 
 
@@ -404,7 +406,8 @@ tidy(sf_model) %>%
 The test shows that there is a statistically-significant, negative correlation between the two variables with a 95% confidence interval of 232008.8 to -121138.1.
 
 ```{r, message = FALSE, echo = FALSE, warning = FALSE}
-t.test(avg_sf_home_val ~ maj_white, data)
+t.test_white = t.test(avg_sf_home_val ~ maj_white, data)
+t.test_white
 
 white_model <- lm(avg_sf_home_val ~ maj_white, data = data)
 
