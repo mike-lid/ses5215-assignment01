@@ -7,7 +7,7 @@
 
         <meta name="author" content="Daniel + Megan + Mike" />
     
-        <meta name="date" content="2021-11-11" />
+        <meta name="date" content="2021-11-16" />
     
     <title>What Influences Single Family Home Values?</title>
 
@@ -147,7 +147,7 @@
       <p class="authors">
            <span class="glyphicon glyphicon-user"></span> Daniel + Megan + Mike
       </p>
-         <p class="date"><span class="glyphicon glyphicon-calendar"></span> 11 November 2021</p>
+         <p class="date"><span class="glyphicon glyphicon-calendar"></span> 16 November 2021</p>
            
 
    
@@ -446,24 +446,34 @@ font-family: arial}
 ## sample estimates:
 ##       cor 
 ## 0.2222675</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = avg_sf_home_val ~ pct_moved, data = data)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -889767 -188203  -83728   74450 1529558 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)   376393      32413  11.613  &lt; 2e-16 ***
-## pct_moved     347767      83347   4.173 3.84e-05 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 321400 on 335 degrees of freedom
-## Multiple R-squared:  0.0494, Adjusted R-squared:  0.04657 
-## F-statistic: 17.41 on 1 and 335 DF,  p-value: 3.843e-05</code></pre>
+<table>
+<caption>Coefficient-Level Estimates for a Model Fitted to Estimate Home Values in a Given Massachusetts Census Tract Based on Percentage of Population Moved in Past Year.</caption>
+<thead>
+<tr class="header">
+<th align="left">Predictor</th>
+<th align="right">B</th>
+<th align="right">SE</th>
+<th align="right">t</th>
+<th align="left">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Intercept</td>
+<td align="right">376392.9</td>
+<td align="right">32412.65</td>
+<td align="right">11.61</td>
+<td align="left">&lt;0.001</td>
+</tr>
+<tr class="even">
+<td align="left">Percentage of Population Moved in Past Year</td>
+<td align="right">347766.5</td>
+<td align="right">83346.56</td>
+<td align="right">4.17</td>
+<td align="left">&lt;0.001</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="the-correlation-between-the-average-home-value-and-percent-of-the-single-family-homes-in-a-given-census-tract." class="section level3">
 <h3>The Correlation Between the Average Home Value and Percent of the Single-Family Homes in a Given Census Tract.</h3>
@@ -479,24 +489,34 @@ font-family: arial}
 ## sample estimates:
 ##        cor 
 ## -0.2371773</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = avg_sf_home_val ~ pct_sf_home, data = data)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -499661 -198266  -73658   75135 1485740 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)   596337      29469  20.236  &lt; 2e-16 ***
-## pct_sf_home  -271823      60830  -4.469 1.08e-05 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 320300 on 335 degrees of freedom
-## Multiple R-squared:  0.05625,    Adjusted R-squared:  0.05344 
-## F-statistic: 19.97 on 1 and 335 DF,  p-value: 1.079e-05</code></pre>
+<table>
+<caption>Coefficient-Level Estimates for a Model Fitted to Estimate Home Values in a Given Massachusetts Census Tract Based on Percentage of Single Family Homes.</caption>
+<thead>
+<tr class="header">
+<th align="left">Predictor</th>
+<th align="right">B</th>
+<th align="right">SE</th>
+<th align="right">t</th>
+<th align="left">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Intercept</td>
+<td align="right">596336.8</td>
+<td align="right">29469.41</td>
+<td align="right">20.24</td>
+<td align="left">&lt;0.001</td>
+</tr>
+<tr class="even">
+<td align="left">Percentage of Single Family Homes</td>
+<td align="right">-271822.8</td>
+<td align="right">60830.05</td>
+<td align="right">-4.47</td>
+<td align="left">&lt;0.001</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="difference-of-means-regression-on-continuous-variables" class="section level2">
@@ -515,49 +535,87 @@ font-family: arial}
 ## sample estimates:
 ## mean in group FALSE  mean in group TRUE 
 ##            329874.9            506448.4</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = avg_sf_home_val ~ maj_white, data = data)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -413371 -203854  -83131   59711 1560675 
-## 
-## Coefficients:
-##               Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)     329875      58492   5.640 3.63e-08 ***
-## maj_whiteTRUE   176574      61384   2.877  0.00428 ** 
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 325700 on 335 degrees of freedom
-## Multiple R-squared:  0.0241, Adjusted R-squared:  0.02119 
-## F-statistic: 8.275 on 1 and 335 DF,  p-value: 0.004278</code></pre>
+<table>
+<caption>Coefficient-Level Estimates for a Model Fitted to Estimate Home Values in a Given Massachusetts Census Tract Based on Majority White Population.</caption>
+<thead>
+<tr class="header">
+<th align="left">Predictor</th>
+<th align="right">B</th>
+<th align="right">SE</th>
+<th align="right">t</th>
+<th align="left">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Intercept</td>
+<td align="right">329874.9</td>
+<td align="right">58492.22</td>
+<td align="right">5.64</td>
+<td align="left">&lt;0.001</td>
+</tr>
+<tr class="even">
+<td align="left">Majority White</td>
+<td align="right">176573.5</td>
+<td align="right">61383.59</td>
+<td align="right">2.88</td>
+<td align="left">0.004</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="the-difference-of-means-between-the-average-home-value-and-the-urban-rural-classification-in-a-given-census-tract." class="section level3">
 <h3>The Difference of Means Between the Average Home Value and the Urban-Rural Classification in a Given Census Tract.</h3>
 <p>The test shows that there is a statistically significant correlation with some types of urban-rural classifications, but not all. The housing values in large fringe metros and micropolitan areas are not significantly different than those in large central metros.</p>
-<pre><code>## 
-## Call:
-## lm(formula = avg_sf_home_val ~ type, data = data)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -435707 -186514  -71036   65474 1524460 
-## 
-## Coefficients:
-##                        Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)              527901      38702  13.640  &lt; 2e-16 ***
-## typeLarge fringe metro    14762      44143   0.334   0.7383    
-## typeMedium metro        -286602      61773  -4.640 5.03e-06 ***
-## typeMicropolitan        -307097     160741  -1.911   0.0569 .  
-## typeSmall metro         -262622     105989  -2.478   0.0137 *  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 312000 on 332 degrees of freedom
-## Multiple R-squared:  0.1122, Adjusted R-squared:  0.1015 
-## F-statistic: 10.49 on 4 and 332 DF,  p-value: 5.164e-08</code></pre>
+<table>
+<caption>Coefficient-Level Estimates for a Model Fitted to Estimate Home Values in a Given Massachusetts Census Tract Based on Urban-Rural Classification.</caption>
+<thead>
+<tr class="header">
+<th align="left">Predictor</th>
+<th align="right">B</th>
+<th align="right">SE</th>
+<th align="right">t</th>
+<th align="left">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Intercept</td>
+<td align="right">527900.77</td>
+<td align="right">38701.81</td>
+<td align="right">13.64</td>
+<td align="left">&lt;0.001</td>
+</tr>
+<tr class="even">
+<td align="left">Large Fringe Metro</td>
+<td align="right">14762.26</td>
+<td align="right">44142.56</td>
+<td align="right">0.33</td>
+<td align="left">0.738</td>
+</tr>
+<tr class="odd">
+<td align="left">Medium Metro</td>
+<td align="right">-286601.47</td>
+<td align="right">61772.97</td>
+<td align="right">-4.64</td>
+<td align="left">&lt;0.001</td>
+</tr>
+<tr class="even">
+<td align="left">Micropolitan</td>
+<td align="right">-307097.32</td>
+<td align="right">160740.67</td>
+<td align="right">-1.91</td>
+<td align="left">0.057</td>
+</tr>
+<tr class="odd">
+<td align="left">Small Metro</td>
+<td align="right">-262622.31</td>
+<td align="right">105989.26</td>
+<td align="right">-2.48</td>
+<td align="left">0.014</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -567,36 +625,81 @@ font-family: arial}
 <p>To really get to the separate effects each of these variables might have on average home values in census tracts, we used a multivariate regression to contextualize these relationships at once. From the summary, we can see that four variables were statistically-significant at the 95% confidence interval in effecting average home values in a census tract: 1) percentage of single family homes, 2) the percentage of population that moved in the past year, 3) the classification as majority white, and 4) classification as a medium metro area. If we wanted to reduce our confidence interval to 90%, we could then include the classification of a small metro area as statistically significant. However, both large fringe metro areas and micropolitan areas were not found to be statistically significant.</p>
 <p><em><em>So what are the specific relationships between average home value and each independent variable?</em></em></p>
 <ul>
-<li>Percentage of Single Family Homes:</li>
-<li>Percentage of Population that Moved in the Past Year:</li>
-<li>Classification as Majority White Population:</li>
-<li>Classification as a Medium Metro Area:</li>
+<li>Percentage of Single Family Homes: INSERT DESCRIPTION</li>
+<li>Percentage of Population that Moved in the Past Year: INSERT DESCRIPTION</li>
+<li>Classification as Majority White Population: INSERT DESCRIPTION</li>
+<li>Classification as a Medium Metro Area: INSERT DESCRIPTION</li>
 </ul>
-<pre><code>## 
-## Call:
-## lm(formula = avg_sf_home_val ~ pct_sf_home + pct_moved + maj_white + 
-##     type, data = data)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -596421 -168459  -52951   70975 1428938 
-## 
-## Coefficients:
-##                        Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)              307328      64802   4.743 3.15e-06 ***
-## pct_sf_home             -169058      69670  -2.427   0.0158 *  
-## pct_moved                188934      84259   2.242   0.0256 *  
-## maj_whiteTRUE            248960      59819   4.162 4.03e-05 ***
-## typeLarge fringe metro     3636      47007   0.077   0.9384    
-## typeMedium metro        -265169      66313  -3.999 7.87e-05 ***
-## typeMicropolitan        -218180     160807  -1.357   0.1758    
-## typeSmall metro         -192042     109471  -1.754   0.0803 .  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 299100 on 329 degrees of freedom
-## Multiple R-squared:  0.1914, Adjusted R-squared:  0.1742 
-## F-statistic: 11.13 on 7 and 329 DF,  p-value: 1.216e-12</code></pre>
+<table>
+<caption>Coefficient-Level Estimates for a Model Fitted to Estimate Home Values in a Given Massachusetts Census Tract.</caption>
+<thead>
+<tr class="header">
+<th align="left">Predictor</th>
+<th align="right">B</th>
+<th align="right">SE</th>
+<th align="right">t</th>
+<th align="left">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Intercept</td>
+<td align="right">307328.10</td>
+<td align="right">64801.69</td>
+<td align="right">4.74</td>
+<td align="left">&lt;0.001</td>
+</tr>
+<tr class="even">
+<td align="left">Percent of Single Family Homes</td>
+<td align="right">-169057.98</td>
+<td align="right">69669.54</td>
+<td align="right">-2.43</td>
+<td align="left">0.016</td>
+</tr>
+<tr class="odd">
+<td align="left">Percent Moved (Past Year)</td>
+<td align="right">188934.24</td>
+<td align="right">84258.77</td>
+<td align="right">2.24</td>
+<td align="left">0.026</td>
+</tr>
+<tr class="even">
+<td align="left">Majority White</td>
+<td align="right">248959.97</td>
+<td align="right">59818.49</td>
+<td align="right">4.16</td>
+<td align="left">&lt;0.001</td>
+</tr>
+<tr class="odd">
+<td align="left">Large Fringe Metro</td>
+<td align="right">3635.61</td>
+<td align="right">47006.71</td>
+<td align="right">0.08</td>
+<td align="left">0.938</td>
+</tr>
+<tr class="even">
+<td align="left">Medium Metro</td>
+<td align="right">-265168.78</td>
+<td align="right">66312.89</td>
+<td align="right">-4.00</td>
+<td align="left">&lt;0.001</td>
+</tr>
+<tr class="odd">
+<td align="left">Micropolitan</td>
+<td align="right">-218180.19</td>
+<td align="right">160807.39</td>
+<td align="right">-1.36</td>
+<td align="left">0.176</td>
+</tr>
+<tr class="even">
+<td align="left">Small Metro</td>
+<td align="right">-192042.31</td>
+<td align="right">109470.57</td>
+<td align="right">-1.75</td>
+<td align="left">0.080</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 

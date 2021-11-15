@@ -1,7 +1,7 @@
 ---
 title: "**What Influences Single Family Home Values?**"
 author: "Daniel + Megan + Mike"
-date: "11 November 2021"
+date: "16 November 2021"
 output: 
   rmdformats::downcute:
   code_folding: hide
@@ -48,6 +48,7 @@ The dataset includes 1478 census tracks. Note - the housing value is only availa
 ```{r load library, message=FALSE, warning=FALSE, echo = FALSE, include = FALSE}
 library(tidyverse)
 library(tidycensus)
+library(broom)
 library(readxl)
 library(knitr)
 library(sf)
@@ -360,7 +361,17 @@ cor.test(~ avg_sf_home_val+ pct_moved, data = data)
 
 moved_model <- lm(avg_sf_home_val ~ pct_moved, data = data)
 
-summary(moved_model)
+#summary(moved_model)
+
+tidy(moved_model) %>%
+  mutate(
+    p.value = scales::pvalue(p.value),
+    term = c("Intercept", "Percentage of Population Moved in Past Year")
+  ) %>%
+  kable(
+    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate Home Values in a Given Massachusetts Census Tract Based on Percentage of Population Moved in Past Year.",
+    col.names = c("Predictor", "B", "SE", "t", "p"),
+    digits = c(0, 2, 3, 2, 3))
 
 ```
 
@@ -370,11 +381,19 @@ The test shows that there is a statistically-significant, negative correlation b
 
 
 ```{r, message = FALSE, echo = FALSE, warning = FALSE}
-cor.test(~ avg_sf_home_val+ pct_sf_home, data = data)
+cor.test(~ avg_sf_home_val + pct_sf_home, data = data)
 
 sf_model <- lm(avg_sf_home_val ~ pct_sf_home, data = data)
 
-summary(sf_model)
+tidy(sf_model) %>%
+  mutate(
+    p.value = scales::pvalue(p.value),
+    term = c("Intercept", "Percentage of Single Family Homes")
+  ) %>%
+  kable(
+    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate Home Values in a Given Massachusetts Census Tract Based on Percentage of Single Family Homes.",
+    col.names = c("Predictor", "B", "SE", "t", "p"),
+    digits = c(0, 2, 3, 2, 3))
 ```
 
 ## **difference of means / regression on continuous variables**
@@ -389,7 +408,15 @@ t.test(avg_sf_home_val ~ maj_white, data)
 
 white_model <- lm(avg_sf_home_val ~ maj_white, data = data)
 
-summary(white_model)
+tidy(white_model) %>%
+  mutate(
+    p.value = scales::pvalue(p.value),
+    term = c("Intercept", "Majority White")
+  ) %>%
+  kable(
+    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate Home Values in a Given Massachusetts Census Tract Based on Majority White Population.",
+    col.names = c("Predictor", "B", "SE", "t", "p"),
+    digits = c(0, 2, 3, 2, 3))
 ```
 
 ### The Difference of Means Between the Average Home Value and the Urban-Rural Classification in a Given Census Tract. 
@@ -403,7 +430,15 @@ data <- data %>%
 
 type_model <- lm(avg_sf_home_val ~ type, data)
 
-summary(type_model)
+tidy(type_model) %>%
+  mutate(
+    p.value = scales::pvalue(p.value),
+    term = c("Intercept", "Large Fringe Metro", "Medium Metro", "Micropolitan", "Small Metro")
+  ) %>%
+  kable(
+    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate Home Values in a Given Massachusetts Census Tract Based on Urban-Rural Classification.",
+    col.names = c("Predictor", "B", "SE", "t", "p"),
+    digits = c(0, 2, 3, 2, 3))
 ```
 
 # **multivariate regression**
@@ -413,14 +448,23 @@ To really get to the separate effects each of these variables might have on aver
 
 _*So what are the specific relationships between average home value and each independent variable?*_
 
-- Percentage of Single Family Homes: 
-- Percentage of Population that Moved in the Past Year:
-- Classification as Majority White Population:
-- Classification as a Medium Metro Area:
+- Percentage of Single Family Homes: INSERT DESCRIPTION
+- Percentage of Population that Moved in the Past Year: INSERT DESCRIPTION
+- Classification as Majority White Population: INSERT DESCRIPTION
+- Classification as a Medium Metro Area: INSERT DESCRIPTION
 
-```{r, message = FALSE, echo = FALSE, warning = FALSE}
-full_model <- lm(avg_sf_home_val ~ pct_sf_home + pct_moved + maj_white + type, data)
-
-summary(full_model)
+```{r, warning = FALSE, message = FALSE, echo = FALSE}
+lm(avg_sf_home_val ~ pct_sf_home + pct_moved + maj_white + type, data) %>%
+  tidy() %>%
+  mutate(
+    p.value = scales::pvalue(p.value),
+    term = c("Intercept", "Percent of Single Family Homes", "Percent Moved (Past Year)", "Majority White", "Large Fringe Metro", "Medium Metro","Micropolitan", "Small Metro")
+  ) %>%
+  kable(
+    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate Home Values in a Given Massachusetts Census Tract.",
+    col.names = c("Predictor", "B", "SE", "t", "p"),
+    digits = c(0, 2, 3, 2, 3))
+    
 ```
+
 
