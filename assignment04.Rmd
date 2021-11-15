@@ -1,5 +1,5 @@
 ---
-title: "**How Well the Percentage of Single-Family Homes in a Census Tract Can Reveal Other Aspects**"
+title: "**What Influences Single Family Home Values?**"
 author: "Daniel + Megan + Mike"
 date: "11 November 2021"
 output: 
@@ -353,7 +353,7 @@ Our dependent variable is the census tracts' average home value. Our independent
 
 ### The Correlation Between the Average Home Value and Percent of the Population that Moved in a Given Census Tract. 
 
-The test shows that there is a statistically significant positive correlation between the two variables with a 95% confidence interval of .118 to .321.
+The test shows that there is a statistically-significant, positive correlation between the two variables with a 95% confidence interval of .118 to .321.
 
 ```{r, message = FALSE, echo = FALSE, warning = FALSE}
 cor.test(~ avg_sf_home_val+ pct_moved, data = data)
@@ -366,7 +366,7 @@ summary(moved_model)
 
 ### The Correlation Between the Average Home Value and Percent of the Single-Family Homes in a Given Census Tract. 
 
-The test shows that there is a statistically significant negative correlation between the two variables with a 95% confidence interval of -.336 to -.134.
+The test shows that there is a statistically-significant, negative correlation between the two variables with a 95% confidence interval of -.336 to -.134.
 
 
 ```{r, message = FALSE, echo = FALSE, warning = FALSE}
@@ -382,7 +382,7 @@ summary(sf_model)
 
 ### The Difference of Means Between the Average Home Value and Designation of Majority White Population in a Given Census Tract.
 
-The test shows that there is a statistically significant negative correlation between the two variables with a 95% confidence interval of 232008.8 to -121138.1.
+The test shows that there is a statistically-significant, negative correlation between the two variables with a 95% confidence interval of 232008.8 to -121138.1.
 
 ```{r, message = FALSE, echo = FALSE, warning = FALSE}
 t.test(avg_sf_home_val ~ maj_white, data)
@@ -406,9 +406,19 @@ type_model <- lm(avg_sf_home_val ~ type, data)
 summary(type_model)
 ```
 
-# multivariate regression
+# **multivariate regression**
+In our bivariate analyses, we determined that census tracts with a higher percentage of population that has moved in the past year have higher home values, and so do census tracts where the majority of the population is white. But how much of the effect we are seeing for (INSERT SOMETHING ABOUT THE TWO VARIABLES SHARING A SAME CAUSE)?
 
-```{r}
+To really get to the separate effects each of these variables might have on average home values in census tracts, we used a multivariate regression to contextualize these relationships at once. From the summary, we can see that four variables were statistically-significant at the 95% confidence interval in effecting average home values in a census tract: 1) percentage of single family homes, 2) the percentage of population that moved in the past year, 3) the classification as majority white, and 4) classification as a medium metro area. If we wanted to reduce our confidence interval to 90%, we could then include the classification of a small metro area as statistically significant. However, both large fringe metro areas and micropolitan areas were not found to be statistically significant. 
+
+_*So what are the specific relationships between average home value and each independent variable?*_
+
+- Percentage of Single Family Homes: 
+- Percentage of Population that Moved in the Past Year:
+- Classification as Majority White Population:
+- Classification as a Medium Metro Area:
+
+```{r, message = FALSE, echo = FALSE, warning = FALSE}
 full_model <- lm(avg_sf_home_val ~ pct_sf_home + pct_moved + maj_white + type, data)
 
 summary(full_model)
