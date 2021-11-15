@@ -4,7 +4,7 @@ author: "Daniel + Megan + Mike"
 date: "16 November 2021"
 output: 
   rmdformats::downcute:
-  code_folding: hide
+    code_folding: hide
 ---
 <style>
 body {
@@ -59,7 +59,7 @@ library(stargazer)
 ```
 
 
-````{r run variables, message = FALSE, include = FALSE, echo = FALSE, warning = FALSE}
+````{r run variables, message = FALSE, include = FALSE, echo = TRUE, warning = FALSE}
 acs_vars <- c(pop = "B01003_001",
           HUs = "B25001_001",
           oneunit = "B25024_002",
@@ -90,7 +90,7 @@ census <- get_acs(geography = "tract",
 ```
 
 
-```{r calculate urban type, message = FALSE, warning = FALSE, echo = FALSE, include = FALSE}
+```{r calculate urban type, message = FALSE, warning = FALSE, echo = TRUE, include = FALSE}
 #give the GEOID column you're creating the same name as the county GEOID in your census dataset.
 urban_type <- read_xlsx(path = "data/NCHSURCodes2013.xlsx", 
                       sheet = "NCHSURCodes2013") %>%
@@ -110,7 +110,7 @@ urban_type <- read_xlsx(path = "data/NCHSURCodes2013.xlsx",
   select(GEOID_county, type)
 ```
 
-```{r create data table with kable, message = FALSE, warning = FALSE,echo = FALSE}
+```{r create data table with kable, message = FALSE, warning = FALSE,echo = TRUE}
 #join the types to the census tracts
 #view the first few rows of this combined data set.
 
@@ -130,7 +130,7 @@ The continuous variables we use are:
 - geographic mobility
 - average value of single, detached housing units
 
-```{r t_tests, message = FALSE, echo = FALSE, warning = FALSE}
+```{r t_tests, message = FALSE, echo = TRUE, warning = FALSE}
 pct_moved_t_test <- t.test(data$pct_moved)
 pct_sf_home_t_test <- t.test(data$pct_sf_home)
 avg_sf_home_val_t_test <- t.test(data$avg_sf_home_val)
@@ -158,7 +158,7 @@ avg_sf_home_val_hist <- ggplot(data) +
   geom_histogram(aes(x = avg_sf_home_val))
 ```
 
-```{r summary table continuous, message = FALSE, echo = FALSE, warning = FALSE}
+```{r summary table continuous, message = FALSE, echo = TRUE, warning = FALSE}
 cont_summary <- tibble(
   variable = c(
                "Percent of Residents Who Arrived in Past Year", 
@@ -207,7 +207,7 @@ cont_summary <- tibble(
 kable(cont_summary, digits = 1)
 ```
 
-```{r adding histograms, message = FALSE, warning = FALSE, echo = FALSE}
+```{r adding histograms, message = FALSE, warning = FALSE, echo = TRUE}
 
 pct_moved_hist <- ggplot(data) +
   geom_histogram(aes(x = pct_moved))
@@ -250,7 +250,7 @@ The categorical variables we use are:
 - Majority White or Non-Majority White Classification of Census Tract
 - Urban-Rural Classification
 
-```{r t_tersts, message = FALSE, echo = FALSE, warning = FALSE, include = FALSE}
+```{r t_tersts, message = FALSE, echo = TRUE, warning = FALSE, include = FALSE}
 pct_wm <- t.test(data$maj_white == "TRUE")
 pct_wnm <-  t.test(data$maj_white == "FALSE")
 pct_large_metro <- t.test(data$type == "Large central metro")
@@ -264,7 +264,7 @@ pct_rural <- t.test(data$type == "Non-core")
 ### _**census tracts with a majority white population**_
 Unsurprisingly, the majority of the census tracts in Massachusetts contain a majority white population. 
 
-```{r majority white summary, message = FALSE, echo = FALSE, warning = FALSE}
+```{r majority white summary, message = FALSE, echo = TRUE, warning = FALSE}
 categorical_summary_white <- tibble(`Racial Composition of Census Tract` = 
                               c("Majority White",
                                 "Majority Non-White"),
@@ -281,7 +281,7 @@ categorical_summary_white <- tibble(`Racial Composition of Census Tract` =
 kable(categorical_summary_white, digits = 0)
 ```
 
-```{r majority white plot, message = FALSE, echo = FALSE, warning = FALSE }
+```{r majority white plot, message = FALSE, echo = TRUE, warning = FALSE }
 ggplot(categorical_summary_white) +
   geom_bar(aes(x = `Racial Composition of Census Tract`, 
                y = `Sample Proportion`),
@@ -300,7 +300,7 @@ ggplot(categorical_summary_white) +
 ### _**urban-rural classifications**_
 Most census tracts had an urban-rural classification as "large fringe metro."
 
-```{r urban rural summary, message = FALSE, echo = FALSE, warning = FALSE}
+```{r urban rural summary, message = FALSE, echo = TRUE, warning = FALSE}
 categorical_summary_type <- tibble(`County Type of Census Tract` = 
                               c("Large central metro",
                                 "Large fringe metro",
@@ -333,7 +333,7 @@ categorical_summary_type <- tibble(`County Type of Census Tract` =
 kable(categorical_summary_type, digits = 0)
 ```
 
-```{r urban rural plot, message = FALSE, echo = FALSE, warning = FALSE}
+```{r urban rural plot, message = FALSE, echo = TRUE, warning = FALSE}
 ggplot(categorical_summary_type) +
   geom_bar(aes(x = `County Type of Census Tract`, 
                y = `Sample proportion`),
@@ -358,7 +358,7 @@ Our dependent variable is the census tracts' average home value. Our independent
 
 The test shows that there is a statistically-significant, positive correlation between the two variables with a 95% confidence interval of .118 to .321.
 
-```{r, message = FALSE, echo = FALSE, warning = FALSE}
+```{r, message = FALSE, echo = TRUE, warning = FALSE}
 cor.test(~ avg_sf_home_val+ pct_moved, data = data)
 
 moved_model <- lm(avg_sf_home_val ~ pct_moved, data = data)
@@ -382,7 +382,7 @@ tidy(moved_model) %>%
 The test shows that there is a statistically-significant, negative correlation between the two variables with a 95% confidence interval of -.336 to -.134.
 
 
-```{r, message = FALSE, echo = FALSE, warning = FALSE}
+```{r, message = FALSE, echo = TRUE, warning = FALSE}
 cor.test(~ avg_sf_home_val + pct_sf_home, data = data)
 
 sf_model <- lm(avg_sf_home_val ~ pct_sf_home, data = data)
@@ -405,7 +405,7 @@ tidy(sf_model) %>%
 
 The test shows that there is a statistically-significant, negative correlation between the two variables with a 95% confidence interval of 232008.8 to -121138.1.
 
-```{r, message = FALSE, echo = FALSE, warning = FALSE}
+```{r, message = FALSE, echo = TRUE, warning = FALSE}
 t.test_white = t.test(avg_sf_home_val ~ maj_white, data)
 t.test_white
 
@@ -426,7 +426,7 @@ tidy(white_model) %>%
 
 The test shows that there is a statistically significant correlation with some types of urban-rural classifications, but not all. The housing values in large fringe metros and micropolitan areas are not significantly different than those in large central metros. 
 
-```{r, message = FALSE, echo = FALSE, warning = FALSE}
+```{r, message = FALSE, echo = TRUE, warning = FALSE}
 data <- data %>%
   mutate(type = as.factor(type)) %>%
   mutate(type = relevel(type, "Large central metro"))
@@ -456,7 +456,7 @@ _*So what are the specific relationships between average home value and each ind
 - Classification as Majority White Population: INSERT DESCRIPTION
 - Classification as a Medium Metro Area: INSERT DESCRIPTION
 
-```{r, warning = FALSE, message = FALSE, echo = FALSE}
+```{r, warning = FALSE, message = FALSE, echo = TRUE}
 lm(avg_sf_home_val ~ pct_sf_home + pct_moved + maj_white + type, data) %>%
   tidy() %>%
   mutate(
