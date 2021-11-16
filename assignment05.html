@@ -142,6 +142,8 @@
             <li><a href="#transformations"><strong>transformations</strong></a>
             <ul>
             <li><a href="#mean-centering"><strong>mean centering</strong></a></li>
+            <li><a href="#scaling"><strong>scaling</strong></a></li>
+            <li><a href="#nonlinear-transformations"><strong>nonlinear transformations</strong></a></li>
             </ul></li>
             </ul>
           </div>
@@ -983,7 +985,7 @@ export_summs(full_model, centered_model,
              error_pos = &quot;same&quot;,
              model.names = c(&quot;Initial&quot;, &quot;Centered&quot;),
              coefs = coeff_names)</code></pre>
-<p><table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:unnamed-chunk-8">
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:unnamed-chunk-8">
 <col><col><col><tr>
 <th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Initial</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Centered</th></tr>
 <tr>
@@ -1009,8 +1011,11 @@ export_summs(full_model, centered_model,
 <tr>
 <th colspan="3" style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"> *** p &lt; 0.001;  ** p &lt; 0.01;  * p &lt; 0.05.</th></tr>
 </table>
- ## <strong>scaling</strong></p>
-<p>We scale our data by dividing the average price of SDDU in a census tract by 10,000, because we are interested in grouping unit prices by 10,000. We are less interested to see the difference in prices by dollars, but consider the 10,000 breakdown of unit prices. We chose not to scale the percentage of SDDU’s in a census tract, because it is already grouped into percentages and we are interested to see the effect of these by each percentage. We did, however, scale the percentage of residents moved by dividing by 5, so that we could categorize the percentages into 5% increments.</p>
+
+</div>
+<div id="scaling" class="section level2">
+<h2><strong>scaling</strong></h2>
+<p>We scale our data by dividing the average price of SDDU in a census tract by 1,000, because we are interested in grouping unit prices by thousands of dollars. We are less interested to see the difference in prices by dollars, but consider the thousand-dollar breakdown of unit prices. We chose not to scale the percentage of SDDU’s in a census tract, because it is already grouped into percentages and we are interested to see the effect of these by each percentage. We did, however, scale the percentage of residents moved by dividing by 5, so that we could categorize the percentages into 5% increments.</p>
 <pre class="r"><code>centered_data_scaled &lt;- centered_data %&gt;%
   mutate(avg_sf_home_val_1k = avg_sf_home_val / 1000,
          pct_moved_5 = pct_moved / 5)
@@ -1063,6 +1068,10 @@ export_summs(full_model, centered_model, centered_model_scaled,
 <th colspan="4" style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"> *** p &lt; 0.001;  ** p &lt; 0.01;  * p &lt; 0.05.</th></tr>
 </table>
 
+</div>
+<div id="nonlinear-transformations" class="section level2">
+<h2><strong>nonlinear transformations</strong></h2>
+<p>For nonlinear relationships, non-linear transformations will help the model fit better. To understand if the model would benefit from a non-linear transformation, it helps to plot and visualize the data first. For our data, we believe the percentage of single, detached dwelling units in a given census tract may not be logarithmically relational. However, in order to verify this, we will run a log transformation to compare. If the log-transformed version has statistically-significant variables and if the model fit (as indicated by the R-square value) improves, then we will use this logarithmic-transformed model. The model-fit (R squared value) is how we choose which model to rely on.</p>
 </div>
 </div>
 </div>
