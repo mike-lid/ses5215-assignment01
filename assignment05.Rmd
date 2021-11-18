@@ -568,7 +568,7 @@ data_log <- data %>%
 coeff_names_logged <- c("Constant" = "(Intercept)",
                  
                  "Percentage of SDDU" = "pct_sf_home",
-                 "Percentage of SSDDU (Logged)" = "log2_pct_sf_home",
+                 "Percentage of SDDU (Logged)" = "log2_pct_sf_home",
                  "Percentage of Moved (5% Increments)" = "pct_moved_5",
                  "Percentage of Moved" = "pct_moved",
                  "Percentage of Moved (Logged)" = "log2_pct_moved",
