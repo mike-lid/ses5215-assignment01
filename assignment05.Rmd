@@ -586,7 +586,7 @@ export_summs(full_model, centered_model, centered_model_scaled, model_log,
              error_pos = "same",
              model.names = c("Initial\n(price in dollars)", 
                              "Centered\n(price in dollars)", 
-                             "Centered\n(price in thousand of dollars)",
+                             "Centered+Scaled\n(price in thousand of dollars)",
                              "Logged\n(price in dollars)"),
              coefs = coeff_names_logged)
 
