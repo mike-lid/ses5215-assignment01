@@ -1,5 +1,5 @@
 ---
-title: "**What Influences Single Family Home Values?**"
+title: "**What Influences the Value of Single, Detached Dwelling Units?**"
 author: "Daniel + Megan + Mike"
 date: "16 November 2021"
 output: 
@@ -54,8 +54,9 @@ library(knitr)
 library(sf)
 library(gridExtra)
 library(DT)
-library(pander)
-library(stargazer)
+library(gridExtra)
+library(jtools)
+library(huxtable)
 ```
 
 
@@ -163,7 +164,7 @@ cont_summary <- tibble(
   variable = c(
                "Percent of Residents Who Arrived in Past Year", 
                "Percent of Single, Detached Housing Units",
-               "Average Home Value for Single, Detached Housing Units"),
+               "Median Housig Unit Value for Single, Detached Housing Units"),
   
   `sample mean` = c(
                     paste(round(pct_moved_t_test$estimate, 2), "%", sep=""),
@@ -350,13 +351,13 @@ ggplot(categorical_summary_type) +
   theme(axis.text.x = element_text(angle = 90)) 
 ```
 # **bivariate analysis**
-Our dependent variable is the census tracts' average home value. Our independent variables are the percentage of single family homes in a census tract, the census tract's location relative to metropolitan center, and the percent of people who moved in the past year in a given census tract. 
+Our dependent variable is the census tracts' average price of single, detached housing units. Our independent variables are the percentage of single, detached dwelling units in a census tract, the census tract's location relative to metropolitan center, and the percent of population who moved in the past year in a given census tract. 
 
 ## **correlations / regression on continuous variables**
 
-### The Correlation Between the Average Home Value and Percent of the Population that Moved in a Given Census Tract. 
+### The Correlation Between the Average Housing Price for Single, Detached Dwelling Units and Percent of the Population that Moved in a Given Census Tract. 
 
-The test shows that there is a statistically-significant, positive correlation between the two variables with a 95% confidence interval of .118 to .321.
+The test shows that there is a statistically-significant, positive correlation between the two variables with a 95% confidence interval of .118 to .321. This means that as the percentage of the population that has moved in a census tract increases, the average price of a single, detached housing unit in a given census tract also increases.
 
 ```{r, message = FALSE, echo = TRUE, warning = FALSE}
 cor.test(~ avg_sf_home_val+ pct_moved, data = data)
@@ -371,15 +372,15 @@ tidy(moved_model) %>%
     term = c("Intercept", "Percentage of Population Moved in Past Year")
   ) %>%
   kable(
-    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate Home Values in a Given Massachusetts Census Tract Based on Percentage of Population Moved in Past Year.",
+    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate the Average Single, Detached Dwelling Unit Price in a Given Massachusetts Census Tract Based on Percentage of Population Moved in Past Year.",
     col.names = c("Predictor", "B", "SE", "t", "p"),
     digits = c(0, 2, 3, 2, 3))
 
 ```
 
-### The Correlation Between the Average Home Value and Percent of the Single-Family Homes in a Given Census Tract. 
+### The Correlation Between the Median Home Price and Percent of the Single-Family Homes in a Given Census Tract. 
 
-The test shows that there is a statistically-significant, negative correlation between the two variables with a 95% confidence interval of -.336 to -.134.
+The test shows that there is a statistically-significant, negative correlation between the two variables with a 95% confidence interval of -.336 to -.134. This means that as the percentage of single, detached dwelling units in a given census tract increases, the average price of a single, detached dwelling unit decreases.
 
 
 ```{r, message = FALSE, echo = TRUE, warning = FALSE}
@@ -393,7 +394,7 @@ tidy(sf_model) %>%
     term = c("Intercept", "Percentage of Single Family Homes")
   ) %>%
   kable(
-    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate Home Values in a Given Massachusetts Census Tract Based on Percentage of Single Family Homes.",
+    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate the Average Single, Detached Dwelling Unit Price in a Given Massachusetts Census Tract Based on Percentage of Single Family Homes.",
     col.names = c("Predictor", "B", "SE", "t", "p"),
     digits = c(0, 2, 3, 2, 3))
 ```
@@ -401,9 +402,9 @@ tidy(sf_model) %>%
 ## **difference of means / regression on continuous variables**
 
 
-### The Difference of Means Between the Average Home Value and Designation of Majority White Population in a Given Census Tract.
+### The Difference of Means Between the Average Price of a Single, Detached Dwelling Unit and Designation of Majority White Population in a Given Census Tract.
 
-The test shows that there is a statistically-significant, negative correlation between the two variables with a 95% confidence interval of 232008.8 to -121138.1.
+The test shows that there is a statistically-significant, positive correlation between the two variables with a 95% confidence interval of 232008.8 to -121138.1. This means that a census tract that has a majority white population is more likely to have a higher average price of single, detached dwelling units than a census tract with not a non-majority white population.
 
 ```{r, message = FALSE, echo = TRUE, warning = FALSE}
 t.test_white = t.test(avg_sf_home_val ~ maj_white, data)
@@ -417,14 +418,14 @@ tidy(white_model) %>%
     term = c("Intercept", "Majority White")
   ) %>%
   kable(
-    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate Home Values in a Given Massachusetts Census Tract Based on Majority White Population.",
+    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate the Average Single, Detached Dwelling Unit Price in a Given Massachusetts Census Tract Based on Majority White Population.",
     col.names = c("Predictor", "B", "SE", "t", "p"),
     digits = c(0, 2, 3, 2, 3))
 ```
 
-### The Difference of Means Between the Average Home Value and the Urban-Rural Classification in a Given Census Tract. 
+### The Difference of Means Between the Average Price of a Single, Detached Dwelling Unit and the Urban-Rural Classification in a Given Census Tract. 
 
-The test shows that there is a statistically significant correlation with some types of urban-rural classifications, but not all. The housing values in large fringe metros and micropolitan areas are not significantly different than those in large central metros. 
+The test shows that there is a statistically significant correlation with some types of urban-rural classifications, but not all. The average value of a single, detached dwelling unit in large fringe metros and micropolitan areas are not significantly different than those in large central metros. 
 
 ```{r, message = FALSE, echo = TRUE, warning = FALSE}
 data <- data %>%
@@ -439,34 +440,120 @@ tidy(type_model) %>%
     term = c("Intercept", "Large Fringe Metro", "Medium Metro", "Micropolitan", "Small Metro")
   ) %>%
   kable(
-    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate Home Values in a Given Massachusetts Census Tract Based on Urban-Rural Classification.",
+    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate Housing  Unit Values in a Given Massachusetts Census Tract Based on Urban-Rural Classification.",
     col.names = c("Predictor", "B", "SE", "t", "p"),
     digits = c(0, 2, 3, 2, 3))
 ```
 
 # **multivariate regression**
-In our bivariate analyses, we determined that census tracts with a higher percentage of population that has moved in the past year have higher home values, and so do census tracts where the majority of the population is white. But how much of the effect we are seeing for (INSERT SOMETHING ABOUT THE TWO VARIABLES SHARING A SAME CAUSE)?
+In our bivariate analyses, we determined that census tracts with a lower percentage of single family homes have a higher average price of single, detached dwelling units, and so do census tracts that are located in medium metro areas. But how much of the effect we are seeing for the percentage of single, detached dwelling units have to do with the physical location of the census tract in relation to metropolitan centers? That is, we assume the price of single, detached housing units may be more expensive towards city centers, which also tend to have more multi-dwelling, connected units.
 
-To really get to the separate effects each of these variables might have on average home values in census tracts, we used a multivariate regression to contextualize these relationships at once. From the summary, we can see that four variables were statistically-significant at the 95% confidence interval in effecting average home values in a census tract: 1) percentage of single family homes, 2) the percentage of population that moved in the past year, 3) the classification as majority white, and 4) classification as a medium metro area. If we wanted to reduce our confidence interval to 90%, we could then include the classification of a small metro area as statistically significant. However, both large fringe metro areas and micropolitan areas were not found to be statistically significant. 
+To really get to the separate effects each of these variables might have on average price of single, detached dwelling units in census tracts, we used a multivariate regression to contextualize these relationships at once. From the summary, we can see that four variables were statistically-significant at the 95% confidence interval in effecting average value of a single, detached dwelling unit in a census tract: 1) percentage of single, detached dwelling units, 2) the percentage of population that moved in the past year, 3) the classification as majority white, and 4) classification as a medium metro area. If we wanted to reduce our confidence interval to 90%, we could then include the classification of a small metro area as statistically significant. However, both large fringe metro areas and micropolitan areas were not found to be statistically significant. 
 
-_*So what are the specific relationships between average home value and each independent variable?*_
+_*So what are the specific relationships between average price of single, detached dwelling units and each independent variable?*_
 
-- Percentage of Single Family Homes: The multivariate regression shows that there is a statistically-significant, negative correlation between the percentage of single family homes and the average price of a single, detached housing unit in a census tracts, where a one percent increase in the percentage of single family homes in the census tract predicts a $1,690.58 decrease in the average home price of a single, detached housing unit.
-- Percentage of Population that Moved in the Past Year: The multivariate regression shows that there is a statistically-significant, positive correlation between the percentage of people who have moved in the last year within the census tract and the average price of a single, detached housing unit in a census tract, where a one percent increase in the percentage of single family homes in the census tract predicts a $1,889.34 increase in the average home price of a single, detached housing unit.
-- Classification as Majority White Population: The multivariate regression shows that there is a statistically-significant, negative correlation between majority white census tracts and the average price of a single, detached housing unit in a census tract, where the average home price of a single, detached housing unit is predicted to increase by approximately $250,000 in the census tract is majority white.
-- Classification as a Medium Metro Area: The multivariate regression shows that there is a statistically-significant, positive correlation between medium metro census tracts and the average price of a single, detached housing unit in a census tract, where the average home price of a single, detached housing unit is predicted to decrease by approximately $265,000 in the census tract is in a medium metro census tract.
+- **Percentage of Single Family Homes**: The multivariate regression shows that there is a statistically-significant, negative correlation between the percentage of single family homes and the average price of a single, detached housing unit in a census tract, where a one percent increase in the percentage of single family homes in the census tract predicts an approximate $1,700 decrease in the average home price of a single, detached housing unit.
+- **Percentage of Population that Moved in the Past Year**: The multivariate regression shows that there is a statistically-significant, positive correlation between the percentage of people who have moved in the last year within the census tract and the average price of a single, detached housing unit in a census tract, where a one percent increase in the percentage of single family homes in the census tract predicts a $1,889 increase in the average home price of a single, detached housing unit.
+- **Classification as Majority White Population**: The multivariate regression shows that there is a statistically-significant, negative correlation between majority white census tracts and the average price of a single, detached housing unit in a census tract, where the average home price of a single, detached housing unit is predicted to increase by approximately $250,000 if the census tract is majority white.
+- **Classification as a Medium Metro Area**: The multivariate regression shows that there is a statistically-significant, positive correlation between medium metro census tracts and the average price of a single, detached housing unit in a census tract, where the average home price of a single, detached housing unit is predicted to decrease by approximately $265,000 in the census tract is in a medium metro census tract.
+
 
 ```{r, warning = FALSE, message = FALSE, echo = TRUE}
-lm(avg_sf_home_val ~ pct_sf_home + pct_moved + maj_white + type, data) %>%
-  tidy() %>%
+full_model= lm(avg_sf_home_val ~ pct_sf_home + pct_moved + maj_white + type, data) 
+
+  tidy(full_model) %>%
   mutate(
     p.value = scales::pvalue(p.value),
-    term = c("Intercept", "Percent of Single Family Homes", "Percent Moved (Past Year)", "Majority White", "Large Fringe Metro", "Medium Metro","Micropolitan", "Small Metro")
+    term = c("Intercept", "Percent of Single, Detached Dwelling Units", "Percent Moved (Past Year)", "Majority White", "Large Fringe Metro", "Medium Metro","Micropolitan", "Small Metro")
   ) %>%
   kable(
-    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate Home Values in a Given Massachusetts Census Tract",
+    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate Average Price of a Single, Detached Dwelling Unit in a Given Massachusetts Census Tract.",
     col.names = c("Predictor", "B", "SE", "t", "p"),
     digits = c(0, 2, 3, 2, 3))
     
 ```
+
+# **transformations**
+We applied simple *linear* transformations to our data set in the above analyses, where we multiplied our percent values by a constant value  (100) so that the decimal format could be communicated in terms of percentage (%). This made our values easier to interpret since it relied on whole numbers and not a string of decimals.
+
+## **mean centering**
+
+INSERT DESCRIPTION HERE
+
+```{r, include = FALSE, echo = FALSE, message = FALSE, warning = FALSE}
+lm(avg_sf_home_val ~ pct_sf_home + pct_moved + maj_white + type, data) 
+```
+
+```{r, include = FALSE, warning = FALSE, message = FALSE, echo = FALSE}
+centered_data <- data %>%
+  mutate(pct_sf_home = pct_sf_home - mean(pct_sf_home, na.rm=TRUE),
+         pct_moved = pct_moved - mean(pct_moved, na.rm=TRUE))
+
+
+centered_model <- lm(avg_sf_home_val ~ pct_sf_home + pct_moved + maj_white + type, data)
+
+export_summs(full_model, centered_model, 
+             error_format = "(p = {p.value})",
+             error_pos = "same",
+             model.names = c("Initial", "Centered"))
+```
+
+
+```{r}
+coeff_names <- c("Constant" = "(Intercept)",
+                 "Percentage of Single, Detached Dwelling  Units" = "pct_sf_home",
+                 "Percentage of Population Moved" = "pct_moved",
+                 "Majority White Classification" = "maj_whiteTRUE",
+                 "Large fringe metro" = "typeLarge fringe metro",
+                 "Medium metro" = "typeMedium metro",
+                 "Small metro" = "typeSmall metro",
+                 "Micropolitan" = "typeMicropolitan")
+
+export_summs(full_model, centered_model, 
+             error_format = "(p = {p.value})",
+             error_pos = "same",
+             model.names = c("Initial", "Centered"),
+             coefs = coeff_names)
+```
+
+
+## **scaling**
+
+We scale our data by dividing the average price of SDDU in a census tract by 1,000, because we are interested in grouping unit prices by thousands of dollars. We are less interested to see the difference in prices by dollars, but consider the thousand-dollar breakdown of unit prices. We chose not to scale the percentage of SDDU's in a census tract, because it is already grouped into percentages and we are interested to see the effect of these by each percentage. We did, however, scale the percentage of residents moved by dividing by 5, so that we could categorize the percentages into 5% increments.
+
+```{r}
+centered_data_scaled <- centered_data %>%
+  mutate(avg_sf_home_val_1k = avg_sf_home_val / 1000,
+         pct_moved_5 = pct_moved / 5)
+
+#scaling to change from calculating how these variables effect the dollars of Single, Detached Dwelling Units (SDDU) to how these variables effects the price in terms of 1000's of dollars.
+
+coeff_names_scaled <- c("Constant" = "(Intercept)",
+                 "Percentage of Single, Detached Dwelling  Units" = "pct_sf_home",
+                 "Percentage of Population Moved (5% Increments)" = "pct_moved_5",
+                 "Majority White Classification" = "maj_whiteTRUE",
+                 "Large fringe metro" = "typeLarge fringe metro",
+                 "Medium metro" = "typeMedium metro",
+                 "Small metro" = "typeSmall metro",
+                 "Micropolitan" = "typeMicropolitan")
+                   
+                   
+centered_model_scaled <- lm(avg_sf_home_val_1k ~ pct_sf_home + pct_moved_5 + maj_white + type, centered_data_scaled)
+
+export_summs(full_model, centered_model, centered_model_scaled,
+             error_format = "(p = {p.value})",
+             error_pos = "same",
+             model.names = c("Initial\n(price in dollars)", 
+                             "Centered\n(price in dollars)", 
+                             "Centered\n(price in 1,000 of dollars)"),
+             coefs = coeff_names_scaled)
+
+
+```
+
+## **nonlinear transformations**
+For nonlinear relationships, non-linear transformations will help the model fit better. To understand if the model would benefit from a non-linear transformation, it helps to plot and visualize the data first. For our data, we believe the percentage of single, detached dwelling units in a given census tract may not be logarithmically relational. However, in order to verify this, we will run a log transformation to compare. If the log-transformed version has statistically-significant variables and if the model fit (as indicated by the R-square value) improves, then we will use this logarithmic-transformed model. The model-fit (R squared value) is how we choose which model to rely on.
+
+
+
 
