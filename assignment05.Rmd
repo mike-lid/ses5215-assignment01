@@ -552,7 +552,7 @@ export_summs(full_model, centered_model, centered_model_scaled,
 ```
 
 ## **nonlinear transformations**
-For nonlinear relationships, non-linear transformations will help the model fit better. To understand if the model would benefit from a non-linear transformation, it helps to plot and visualize the data first. For our data, we believe the percentage of single, detached dwelling units in a given census tract may not be logarithmically relational. However, in order to verify this, we will run a log transformation to compare. By log-transforming the dependent variable of housing unit prices and the independent variable of percentage of population moved improved the fit of our model (from .19 to .25). Loggging the percentage of SDDU in a given census tract did not effect the R2 value, but did change some of the level of significance for variables.
+For nonlinear relationships, non-linear transformations will help the model fit better. To understand if the model would benefit from a non-linear transformation, it helps to plot and visualize the data first. For our data, we believe the percentage of single, detached dwelling units in a given census tract may not be logarithmically relational. However, in order to verify this, we will run a log transformation to compare. By log-transforming the dependent variable of housing unit prices and the independent variable of percentage of population moved improved the fit of our model (from .19 to .25). Logging the percentage of SDDU in a given census tract did not effect the R2 value, but did change some of the level of significance for variables.
 
 ```{r, message = FALSE, warning = FALSE, echo = FALSE}
 #logging the percentage of sf homes did not seem to affect it
@@ -589,7 +589,7 @@ export_summs(full_model, centered_model, centered_model_scaled, model_log_depend
                              "Centered\n(price in dollars)", 
                              "Centered+Scaled\n(price in thousand of dollars)",
                              "Logged dependent variable\n(price in dollars)",
-                             "Logged\n(price in dollars)"),
+                             "Logged only independent variables\n(price in dollars)"),
              coefs = coeff_names_logged)
 
 ```
