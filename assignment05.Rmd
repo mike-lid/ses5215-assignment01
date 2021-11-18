@@ -555,8 +555,11 @@ export_summs(full_model, centered_model, centered_model_scaled,
 For nonlinear relationships, non-linear transformations will help the model fit better. To understand if the model would benefit from a non-linear transformation, it helps to plot and visualize the data first. For our data, we believe the percentage of single, detached dwelling units in a given census tract may not be logarithmically relational. However, in order to verify this, we will run a log transformation to compare. If the log-transformed version has statistically-significant variables and if the model fit (as indicated by the R-square value) improves, then we will use this logarithmic-transformed model. The model-fit (R squared value) is how we choose which model to rely on.
 
 ```{r, message = FALSE, warning = FALSE, echo = FALSE}
+#logging the percentage of sf homes did not seem to affect it
 data_log <- data %>%
-  mutate(log2_avg_sf_home_val = log(avg_sf_home_val + mean(data$avg_sf_home_val, na.rm = TRUE), base = 2))
+  mutate(log2_avg_sf_home_val = log(avg_sf_home_val + mean(data$avg_sf_home_val, na.rm = TRUE), base = 2),
+         log2_pct_moved = log(pct_moved + mean(data$pct_moved, na.rm = TRUE), base = 2),
+         log2_pct_sf_home = log(pct_sf_home + mean(data$pct_sf_home, na.rm = TRUE), base = 2))
 ```
 
 
@@ -564,8 +567,11 @@ data_log <- data %>%
 ```{r}
 coeff_names_logged <- c("Constant" = "(Intercept)",
                  
-                 "Percentage of Single, Detached Dwelling  Units" = "pct_sf_home",
-                 "Percentage of Population Moved (5% Increments)" = "pct_moved_5",
+                 "Percentage of SDDU" = "pct_sf_home",
+                 "Percentage of SSDDU (Logged)" = "log2_pct_sf_home",
+                 "Percentage of Moved (5% Increments)" = "pct_moved_5",
+                 "Percentage of Moved" = "pct_moved",
+                 "Percentage of Moved (Logged)" = "log2_pct_moved",
                  "Majority White Classification" = "maj_whiteTRUE",
                  "Large fringe metro" = "typeLarge fringe metro",
                  "Medium metro" = "typeMedium metro",
@@ -573,7 +579,7 @@ coeff_names_logged <- c("Constant" = "(Intercept)",
                  "Micropolitan" = "typeMicropolitan")
                    
                    
-model_log <- lm(log2_avg_sf_home_val ~ pct_sf_home + pct_moved + maj_white + type, data_log)
+model_log <- lm(log2_avg_sf_home_val ~ log2_pct_sf_home + log2_pct_moved + maj_white + type, data_log)
 
 export_summs(full_model, centered_model, centered_model_scaled, model_log,
              error_format = "(p = {p.value})",
