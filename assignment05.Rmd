@@ -1,7 +1,7 @@
 ---
 title: "**What Influences the Value of Single, Detached Dwelling Units?**"
 author: "Daniel + Megan + Mike"
-date: "16 November 2021"
+date: "21 November 2021"
 output: 
   rmdformats::downcute:
     code_folding: hide
@@ -17,7 +17,7 @@ font-family: arial}
 </style>
 
 # **research question**
-How well does a census tract’s percentage of single-family homes and location relative to metropolitan center predict the average home value and tenure period in homes for the Commonwealth of Massachusetts?
+How well does a census tract’s percentage of single, detached dwelling units (SDDUs) and location relative to metropolitan center predict the average home value and tenure period in homes for the Commonwealth of Massachusetts?
 
 # **prior research**
 While the correlation between diversity of housing types and racial and economic diversity in	neighborhoods have previously been established, this study investigated a potential 	relationship between housing typology and foreclosures. In fact, they found a positive (but varied) correlation between type and stability—neighborhoods with a range of housing stock had lower foreclosure and sales rates (Chakraborty et al 2018). Additionally, hedonic modelling of home values have been shown to respond to distance to city center. Longer distance from the metropolitan center correlates with lower property values in the magnitude of 1.82%. However, this relationship is highly income dependent, where devaluation associated with distance is higher for low-income individuals than for high-income individuals (Kestens et al. 2006).
@@ -351,13 +351,13 @@ ggplot(categorical_summary_type) +
   theme(axis.text.x = element_text(angle = 90)) 
 ```
 # **bivariate analysis**
-Our dependent variable is the census tracts' average price of single, detached housing units. Our independent variables are the percentage of single, detached dwelling units in a census tract, the census tract's location relative to metropolitan center, and the percent of population who moved in the past year in a given census tract. 
+Our dependent variable is the census tracts' average price of single, detached dwelling units. Our independent variables are the percentage of SDDUs in a census tract, the census tract's location relative to metropolitan center, and the percent of population who moved in the past year in a given census tract. 
 
 ## **correlations / regression on continuous variables**
 
 ### The Correlation Between the Average Housing Price for Single, Detached Dwelling Units and Percent of the Population that Moved in a Given Census Tract. 
 
-The test shows that there is a statistically-significant, positive correlation between the two variables with a 95% confidence interval of .118 to .321. This means that as the percentage of the population that has moved in a census tract increases, the average price of a single, detached housing unit in a given census tract also increases.
+The test shows that there is a statistically-significant, positive correlation between the two variables with a 95% confidence interval of .118 to .321. This means that as the percentage of the population that has moved in a census tract increases, the average price of a single, detached dwelling unit in a given census tract also increases.
 
 ```{r, message = FALSE, echo = TRUE, warning = FALSE}
 cor.test(~ avg_sf_home_val+ pct_moved, data = data)
@@ -372,7 +372,7 @@ tidy(moved_model) %>%
     term = c("Intercept", "Percentage of Population Moved in Past Year")
   ) %>%
   kable(
-    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate the Average Single, Detached Dwelling Unit Price in a Given Massachusetts Census Tract Based on Percentage of Population Moved in Past Year.",
+    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate the Average SDDU Price in a Given Massachusetts Census Tract Based on Percentage of Population Moved in Past Year.",
     col.names = c("Predictor", "B", "SE", "t", "p"),
     digits = c(0, 2, 3, 2, 3))
 
@@ -394,7 +394,7 @@ tidy(sf_model) %>%
     term = c("Intercept", "Percentage of Single Family Homes")
   ) %>%
   kable(
-    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate the Average Single, Detached Dwelling Unit Price in a Given Massachusetts Census Tract Based on Percentage of Single Family Homes.",
+    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate the Average SDDU Price in a Given Massachusetts Census Tract Based on Percentage of Single Family Homes.",
     col.names = c("Predictor", "B", "SE", "t", "p"),
     digits = c(0, 2, 3, 2, 3))
 ```
@@ -418,7 +418,7 @@ tidy(white_model) %>%
     term = c("Intercept", "Majority White")
   ) %>%
   kable(
-    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate the Average Single, Detached Dwelling Unit Price in a Given Massachusetts Census Tract Based on Majority White Population.",
+    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate the Average SDDU Price in a Given Massachusetts Census Tract Based on Majority White Population.",
     col.names = c("Predictor", "B", "SE", "t", "p"),
     digits = c(0, 2, 3, 2, 3))
 ```
@@ -440,7 +440,7 @@ tidy(type_model) %>%
     term = c("Intercept", "Large Fringe Metro", "Medium Metro", "Micropolitan", "Small Metro")
   ) %>%
   kable(
-    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate Housing  Unit Values in a Given Massachusetts Census Tract Based on Urban-Rural Classification.",
+    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate SDDU Values in a Given Massachusetts Census Tract Based on Urban-Rural Classification.",
     col.names = c("Predictor", "B", "SE", "t", "p"),
     digits = c(0, 2, 3, 2, 3))
 ```
@@ -467,7 +467,7 @@ full_model= lm(avg_sf_home_val ~ pct_sf_home + pct_moved + maj_white + type, dat
     term = c("Intercept", "Percent of Single, Detached Dwelling Units", "Percent Moved (Past Year)", "Majority White", "Large Fringe Metro", "Medium Metro","Micropolitan", "Small Metro")
   ) %>%
   kable(
-    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate Average Price of a Single, Detached Dwelling Unit in a Given Massachusetts Census Tract.",
+    caption = "Coefficient-Level Estimates for a Model Fitted to Estimate Average Price of a SDDU in a Given Massachusetts Census Tract.",
     col.names = c("Predictor", "B", "SE", "t", "p"),
     digits = c(0, 2, 3, 2, 3))
     
@@ -478,7 +478,7 @@ We applied simple *linear* transformations to our data set in the above analyses
 
 ## **mean centering**
 
-INSERT DESCRIPTION HERE
+We mean centered the model to make our intercept easier to interpret. Our initial intercept indicated the predicted increase in the values of single-family detached units (SDDUs) for census tracts with 0% SDDUs and in which 0% of the population had moved in within the last year (geographic mobility). This would be a highly unlikely--or at least very unusual--census tract. By means centering, our intercept shows that the predicted increase in unit value for SDDUs is approximately $303,153 for census tracts with an average percentage of SDDUs and average geographic mobility. Interestingly, this was not dramatically different than the original, uncentered intercept (307,328), perhaps indicating that our model is only able to estimate values around a limited, specific range.
 
 ```{r, include = FALSE, echo = FALSE, message = FALSE, warning = FALSE}
 lm(avg_sf_home_val ~ pct_sf_home + pct_moved + maj_white + type, data) 
@@ -551,15 +551,21 @@ export_summs(full_model, centered_model, centered_model_scaled,
 
 ```
 
-## **nonlinear transformations**
-For nonlinear relationships, non-linear transformations will help the model fit better. To understand if the model would benefit from a non-linear transformation, it helps to plot and visualize the data first. For our data, we believe the percentage of single, detached dwelling units in a given census tract may not be logarithmically relational. However, in order to verify this, we will run a log transformation to compare. By log-transforming the dependent variable of housing unit prices and the independent variable of percentage of population moved improved the fit of our model (from .19 to .25). Logging the percentage of SDDU in a given census tract did not effect the R2 value, but did change some of the level of significance for variables.
+## **nonlinear transformations + summary**
+After comparing linear transformations that did not effect  the *fit* of our R model (but helped us interpret the model better), we compared our model to a non-linear-transformed model. 
+
+We were initially unsure whether any of our variables were likely to have non-linear relationships, so we did some experimentation with logarithmic transformations to see whether they improved our model fit. We suspected that our dependent variable--SDDU prices--could potentially have a non-linear relationship. In fact, doing a base 2 log transformation of our dependent variable and the percentage of population moved to a census tract did improve the fit of our model (from 0.19 to 0.28). This transformation complicates our interpretation somewhat, because we are now predicting based on the change in the *log* of the SDDU price. Nonetheless, the model is a better fit for the data, and the regression indicates a statistically significant, positive effect on SDDU prices ceteris paribus.
+
+Logging the percentage of SDDUs in a given census tract did not effect the R2 value, but did change some of the level of significance for variables. Therefore, because the model fit is equally good, we selected the regression model that has each of our continuous variables transformed. 
+
+Ultimately, we choose the model that logs all of our continuous variables (independent + dependent). The R2 value indicates that 28% of the variance in the average price of SDDUs in a given census tract can be explained by this model. 
 
 ```{r, message = FALSE, warning = FALSE, echo = FALSE}
 #logging the percentage of sf homes did not seem to affect it
 data_log <- data %>%
-  mutate(log2_avg_sf_home_val = log(avg_sf_home_val + mean(data$avg_sf_home_val, na.rm = TRUE), base = 2),
-         log2_pct_moved = log(pct_moved + mean(data$pct_moved, na.rm = TRUE), base = 2),
-         log2_pct_sf_home = log(pct_sf_home + mean(data$pct_sf_home, na.rm = TRUE), base = 2))
+  mutate(log2_avg_sf_home_val = log(avg_sf_home_val,  base = 2),
+         log2_pct_moved = log(pct_moved, base = 2),
+         log2_pct_sf_home = log(pct_sf_home, base = 2))
 ```
 
 
@@ -582,14 +588,14 @@ coeff_names_logged <- c("Constant" = "(Intercept)",
 model_log_dependent <- lm(log2_avg_sf_home_val ~ log2_pct_sf_home + log2_pct_moved + maj_white + type, data_log)
 model_log <- lm(avg_sf_home_val ~ log2_pct_sf_home + log2_pct_moved + maj_white + type, data_log)
 
-export_summs(full_model, centered_model, centered_model_scaled, model_log_dependent, model_log,
+export_summs(full_model, centered_model, centered_model_scaled, model_log, model_log_dependent,
              error_format = "(p = {p.value})",
              error_pos = "same",
              model.names = c("Initial\n(price in dollars)", 
                              "Centered\n(price in dollars)", 
                              "Centered+Scaled\n(price in thousand of dollars)",
-                             "Logged dependent variable\n(price in dollars)",
-                             "Logged only independent variables\n(price in dollars)"),
+                             "Logged only Independent, Continuous Variables\n(price in dollars)",
+                             "All Continuous Variables Logged including Dependent Variable\n(price in dollars)"),
              coefs = coeff_names_logged)
 
 ```
