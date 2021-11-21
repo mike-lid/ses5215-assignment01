@@ -971,103 +971,10 @@ tidy(type_model) %&gt;%
 <div id="mean-centering" class="section level2">
 <h2><strong>mean centering</strong></h2>
 <p>We mean centered the model to make our intercept easier to interpret. Our initial intercept indicated the predicted increase in the values of single-family detached units (SDDUs) for census tracts with 0% SDDUs and in which 0% of the population had moved in within the last year (geographic mobility). This would be a highly unlikely–or at least very unusual–census tract. By means centering, our intercept shows that the predicted increase in unit value for SDDUs is approximately $303,153 for census tracts with an average percentage of SDDUs and average geographic mobility. Interestingly, this was not dramatically different than the original, uncentered intercept (307,328), perhaps indicating that our model is only able to estimate values around a limited, specific range.</p>
-<pre class="r"><code>coeff_names &lt;- c(&quot;Constant&quot; = &quot;(Intercept)&quot;,
-                 &quot;Percentage of Single, Detached Dwelling  Units&quot; = &quot;pct_sf_home&quot;,
-                 &quot;Percentage of Population Moved&quot; = &quot;pct_moved&quot;,
-                 &quot;Majority White Classification&quot; = &quot;maj_whiteTRUE&quot;,
-                 &quot;Large fringe metro&quot; = &quot;typeLarge fringe metro&quot;,
-                 &quot;Medium metro&quot; = &quot;typeMedium metro&quot;,
-                 &quot;Small metro&quot; = &quot;typeSmall metro&quot;,
-                 &quot;Micropolitan&quot; = &quot;typeMicropolitan&quot;)
-
-export_summs(full_model, centered_model, 
-             error_format = &quot;(p = {p.value})&quot;,
-             error_pos = &quot;same&quot;,
-             model.names = c(&quot;Initial&quot;, &quot;Centered&quot;),
-             coefs = coeff_names)</code></pre>
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:unnamed-chunk-8">
-<col><col><col><tr>
-<th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Initial</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Centered</th></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Constant</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">307328.10 *** (p = 0.00)</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">303152.89 *** (p = 0.00)</td></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Percentage of Single, Detached Dwelling  Units</th><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-169057.98 * (p = 0.02)</td><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-169057.98 * (p = 0.02)</td></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Percentage of Population Moved</th><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">188934.24 * (p = 0.03)</td><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">188934.24 * (p = 0.03)</td></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Majority White Classification</th><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">248959.97 *** (p = 0.00)</td><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">248959.97 *** (p = 0.00)</td></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Large fringe metro</th><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">3635.61 (p = 0.94)</td><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">3635.61 (p = 0.94)</td></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Medium metro</th><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-265168.78 *** (p = 0.00)</td><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-265168.78 *** (p = 0.00)</td></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Small metro</th><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-192042.31 (p = 0.08)</td><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-192042.31 (p = 0.08)</td></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Micropolitan</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-218180.19 (p = 0.18)</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-218180.19 (p = 0.18)</td></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">N</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">337&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">337&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.8pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">R2</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.8pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">0.19&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.8pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">0.19&nbsp;</td></tr>
-<tr>
-<th colspan="3" style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"> *** p &lt; 0.001;  ** p &lt; 0.01;  * p &lt; 0.05.</th></tr>
-</table>
-
 </div>
 <div id="scaling" class="section level2">
 <h2><strong>scaling</strong></h2>
 <p>We scale our data by dividing the average price of SDDU in a census tract by 1,000, because we are interested in grouping unit prices by thousands of dollars. We are less interested to see the difference in prices by dollars, but consider the thousand-dollar breakdown of unit prices. We chose not to scale the percentage of SDDU’s in a census tract, because it is already grouped into percentages and we are interested to see the effect of these by each percentage. We did, however, scale the percentage of residents moved by dividing by 5, so that we could categorize the percentages into 5% increments.</p>
-<pre class="r"><code>centered_data_scaled &lt;- centered_data %&gt;%
-  mutate(avg_sf_home_val_1k = avg_sf_home_val / 1000,
-         pct_moved_5 = pct_moved / 5)
-
-#scaling to change from calculating how these variables effect the dollars of Single, Detached Dwelling Units (SDDU) to how these variables effects the price in terms of 1000&#39;s of dollars.
-
-coeff_names_scaled &lt;- c(&quot;Constant&quot; = &quot;(Intercept)&quot;,
-                 &quot;Percentage of Single, Detached Dwelling  Units&quot; = &quot;pct_sf_home&quot;,
-                 &quot;Percentage of Population Moved (5% Increments)&quot; = &quot;pct_moved_5&quot;,
-                 &quot;Majority White Classification&quot; = &quot;maj_whiteTRUE&quot;,
-                 &quot;Large fringe metro&quot; = &quot;typeLarge fringe metro&quot;,
-                 &quot;Medium metro&quot; = &quot;typeMedium metro&quot;,
-                 &quot;Small metro&quot; = &quot;typeSmall metro&quot;,
-                 &quot;Micropolitan&quot; = &quot;typeMicropolitan&quot;)
-                   
-                   
-centered_model_scaled &lt;- lm(avg_sf_home_val_1k ~ pct_sf_home + pct_moved_5 + maj_white + type, centered_data_scaled)
-
-export_summs(full_model, centered_model, centered_model_scaled,
-             error_format = &quot;(p = {p.value})&quot;,
-             error_pos = &quot;same&quot;,
-             model.names = c(&quot;Initial\n(price in dollars)&quot;, 
-                             &quot;Centered\n(price in dollars)&quot;, 
-                             &quot;Centered\n(price in thousand of dollars)&quot;),
-             coefs = coeff_names_scaled)</code></pre>
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:unnamed-chunk-9">
-<col><col><col><col><tr>
-<th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Initial<br>(price in dollars)</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Centered<br>(price in dollars)</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Centered<br>(price in thousand of dollars)</th></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Constant</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">307328.10 *** (p = 0.00)</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">303152.89 *** (p = 0.00)</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">303.15 *** (p = 0.00)</td></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Percentage of Single, Detached Dwelling  Units</th><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-169057.98 * (p = 0.02)</td><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-169057.98 * (p = 0.02)</td><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-169.06 * (p = 0.02)</td></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Percentage of Population Moved (5% Increments)</th><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;"> &nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;"> &nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">944.67 * (p = 0.03)</td></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Majority White Classification</th><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">248959.97 *** (p = 0.00)</td><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">248959.97 *** (p = 0.00)</td><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">248.96 *** (p = 0.00)</td></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Large fringe metro</th><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">3635.61 (p = 0.94)</td><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">3635.61 (p = 0.94)</td><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">3.64 (p = 0.94)</td></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Medium metro</th><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-265168.78 *** (p = 0.00)</td><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-265168.78 *** (p = 0.00)</td><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-265.17 *** (p = 0.00)</td></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Small metro</th><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-192042.31 (p = 0.08)</td><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-192042.31 (p = 0.08)</td><td style="vertical-align: top; text-align: right; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-192.04 (p = 0.08)</td></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Micropolitan</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-218180.19 (p = 0.18)</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-218180.19 (p = 0.18)</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">-218.18 (p = 0.18)</td></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; padding: 6pt 6pt 6pt 6pt; font-weight: normal;">N</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">337&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">337&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">337&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
-<tr>
-<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.8pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">R2</th><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.8pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">0.19&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.8pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">0.19&nbsp;</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.8pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">0.19&nbsp;</td></tr>
-<tr>
-<th colspan="4" style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"> *** p &lt; 0.001;  ** p &lt; 0.01;  * p &lt; 0.05.</th></tr>
-</table>
-
 </div>
 <div id="nonlinear-transformations-summary" class="section level2">
 <h2><strong>nonlinear transformations + summary</strong></h2>
