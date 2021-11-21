@@ -971,10 +971,63 @@ tidy(type_model) %&gt;%
 <div id="mean-centering" class="section level2">
 <h2><strong>mean centering</strong></h2>
 <p>We mean centered the model to make our intercept easier to interpret. Our initial intercept indicated the predicted increase in the values of single-family detached units (SDDUs) for census tracts with 0% SDDUs and in which 0% of the population had moved in within the last year (geographic mobility). This would be a highly unlikely–or at least very unusual–census tract. By means centering, our intercept shows that the predicted increase in unit value for SDDUs is approximately $303,153 for census tracts with an average percentage of SDDUs and average geographic mobility. Interestingly, this was not dramatically different than the original, uncentered intercept (307,328), perhaps indicating that our model is only able to estimate values around a limited, specific range.</p>
+<pre class="r"><code>initial = lm(avg_sf_home_val ~ pct_sf_home + pct_moved + maj_white + type, data) 
+
+centered_data &lt;- data %&gt;%
+  mutate(pct_sf_home = pct_sf_home - mean(pct_sf_home, na.rm=TRUE),
+         pct_moved = pct_moved - mean(pct_moved, na.rm=TRUE))
+
+
+centered_model &lt;- lm(avg_sf_home_val ~ pct_sf_home + pct_moved + maj_white + type, centered_data)
+
+table_version_1 = export_summs(full_model, centered_model, 
+             error_format = &quot;(p = {p.value})&quot;,
+             error_pos = &quot;same&quot;,
+             model.names = c(&quot;Initial&quot;, &quot;Centered&quot;))
+
+coeff_names &lt;- c(&quot;Constant&quot; = &quot;(Intercept)&quot;,
+                 &quot;Percentage of Single, Detached Dwelling  Units&quot; = &quot;pct_sf_home&quot;,
+                 &quot;Percentage of Population Moved&quot; = &quot;pct_moved&quot;,
+                 &quot;Majority White Classification&quot; = &quot;maj_whiteTRUE&quot;,
+                 &quot;Large fringe metro&quot; = &quot;typeLarge fringe metro&quot;,
+                 &quot;Medium metro&quot; = &quot;typeMedium metro&quot;,
+                 &quot;Small metro&quot; = &quot;typeSmall metro&quot;,
+                 &quot;Micropolitan&quot; = &quot;typeMicropolitan&quot;)
+
+table_version_2 = export_summs(full_model, centered_model, 
+             error_format = &quot;(p = {p.value})&quot;,
+             error_pos = &quot;same&quot;,
+             model.names = c(&quot;Initial&quot;, &quot;Centered&quot;),
+             coefs = coeff_names)</code></pre>
 </div>
 <div id="scaling" class="section level2">
 <h2><strong>scaling</strong></h2>
 <p>We scale our data by dividing the average price of SDDU in a census tract by 1,000, because we are interested in grouping unit prices by thousands of dollars. We are less interested to see the difference in prices by dollars, but consider the thousand-dollar breakdown of unit prices. We chose not to scale the percentage of SDDU’s in a census tract, because it is already grouped into percentages and we are interested to see the effect of these by each percentage. We did, however, scale the percentage of residents moved by dividing by 5, so that we could categorize the percentages into 5% increments.</p>
+<pre class="r"><code>centered_data_scaled &lt;- centered_data %&gt;%
+  mutate(avg_sf_home_val_1k = avg_sf_home_val / 1000,
+         pct_moved_5 = pct_moved / 5)
+
+#scaling to change from calculating how these variables effect the dollars of Single, Detached Dwelling Units (SDDU) to how these variables effects the price in terms of 1000&#39;s of dollars.
+
+coeff_names_scaled &lt;- c(&quot;Constant&quot; = &quot;(Intercept)&quot;,
+                 &quot;Percentage of Single, Detached Dwelling  Units&quot; = &quot;pct_sf_home&quot;,
+                 &quot;Percentage of Population Moved (5% Increments)&quot; = &quot;pct_moved_5&quot;,
+                 &quot;Majority White Classification&quot; = &quot;maj_whiteTRUE&quot;,
+                 &quot;Large fringe metro&quot; = &quot;typeLarge fringe metro&quot;,
+                 &quot;Medium metro&quot; = &quot;typeMedium metro&quot;,
+                 &quot;Small metro&quot; = &quot;typeSmall metro&quot;,
+                 &quot;Micropolitan&quot; = &quot;typeMicropolitan&quot;)
+                   
+                   
+centered_model_scaled &lt;- lm(avg_sf_home_val_1k ~ pct_sf_home + pct_moved_5 + maj_white + type, centered_data_scaled)
+
+table_version_3 = export_summs(full_model, centered_model, centered_model_scaled,
+             error_format = &quot;(p = {p.value})&quot;,
+             error_pos = &quot;same&quot;,
+             model.names = c(&quot;Initial\n(price in dollars)&quot;, 
+                             &quot;Centered\n(price in dollars)&quot;, 
+                             &quot;Centered\n(price in thousand of dollars)&quot;),
+             coefs = coeff_names_scaled)</code></pre>
 </div>
 <div id="nonlinear-transformations-summary" class="section level2">
 <h2><strong>nonlinear transformations + summary</strong></h2>
@@ -982,6 +1035,11 @@ tidy(type_model) %&gt;%
 <p>We were initially unsure whether any of our variables were likely to have non-linear relationships, so we did some experimentation with logarithmic transformations to see whether they improved our model fit. We suspected that our dependent variable–SDDU prices–could potentially have a non-linear relationship. In fact, doing a base 2 log transformation of our dependent variable and the percentage of population moved to a census tract did improve the fit of our model (from 0.19 to 0.28). This transformation complicates our interpretation somewhat, because we are now predicting based on the change in the <em>log</em> of the SDDU price. Nonetheless, the model is a better fit for the data, and the regression indicates a statistically significant, positive effect on SDDU prices ceteris paribus.</p>
 <p>Logging the percentage of SDDUs in a given census tract did not effect the R2 value, but did change some of the level of significance for variables. Therefore, because the model fit is equally good, we selected the regression model that has each of our continuous variables transformed.</p>
 <p>Ultimately, we choose the model that logs all of our continuous variables (independent + dependent). The R2 value indicates that 28% of the variance in the average price of SDDUs in a given census tract can be explained by this model.</p>
+<pre class="r"><code>#logging the percentage of sf homes did not seem to affect it
+data_log &lt;- data %&gt;%
+  mutate(log2_avg_sf_home_val = log(avg_sf_home_val,  base = 2),
+         log2_pct_moved = log(pct_moved, base = 2),
+         log2_pct_sf_home = log(pct_sf_home, base = 2))</code></pre>
 <pre class="r"><code>coeff_names_logged &lt;- c(&quot;Constant&quot; = &quot;(Intercept)&quot;,
                  
                  &quot;Percentage of SDDU&quot; = &quot;pct_sf_home&quot;,
@@ -1008,7 +1066,7 @@ export_summs(full_model, centered_model, centered_model_scaled, model_log, model
                              &quot;Logged only Independent, Continuous Variables\n(price in dollars)&quot;,
                              &quot;All Continuous Variables Logged including Dependent Variable\n(price in dollars)&quot;),
              coefs = coeff_names_logged)</code></pre>
-<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:unnamed-chunk-11">
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:unnamed-chunk-9">
 <col><col><col><col><col><col><tr>
 <th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;"></th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Initial<br>(price in dollars)</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Centered<br>(price in dollars)</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Centered+Scaled<br>(price in thousand of dollars)</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">Logged only Independent, Continuous Variables<br>(price in dollars)</th><th style="vertical-align: top; text-align: center; white-space: normal; border-style: solid solid solid solid; border-width: 0.8pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">All Continuous Variables Logged including Dependent Variable<br>(price in dollars)</th></tr>
 <tr>
