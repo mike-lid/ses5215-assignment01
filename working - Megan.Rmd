@@ -340,8 +340,8 @@ interaction_model_log_dependent <- lm(log2_avg_sf_home_val ~ log2_pct_sf_home + 
 export_summs(model_log_dependent, interaction_model_log_dependent,
              error_format = "(p = {p.value})",
              error_pos = "same",
-             model.names = c("Model 4",
-                             "Model 5"))
+             model.names = c("Logged Dependent Variable",
+                             "Interaction Model"))
 ```
 We experimented with various interactions before selecting this model. When we modeled how the racial makeup (majority white or not) of a census tract affects the relationship between percentage of SDDUs and SDDU home values, the model fit (R2) did not increase. When we included interactions among all variables, we did get a model with an R2 value of 0.31. However, at that point the model had become overly complex and the results were becoming less and less meaningful. That model was sacrificing clarity and conciseness for one one-hundredth better fit.
 
