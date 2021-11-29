@@ -720,9 +720,9 @@ coeff_names_interaction <- c("Constant" = "(Intercept)",
                  "Micropolitan" = "typeMicropolitan")
                    
                    
-interaction_model_log_dependent <- lm(log2_avg_sf_home_val ~ log2_pct_sf_home + log2_pct_moved + maj_white + type + log2_pct_sf_home*maj_white + log2_pct_sf_home*type + log2_pct_moved*maj_white + log2_pct_sf_home*log2_pct_moved, data_log)
+interaction_model_log_dependent3 <- lm(log2_avg_sf_home_val ~ log2_pct_sf_home + log2_pct_moved + maj_white + type + log2_pct_sf_home*log2_pct_moved, data_log)
                                       
-export_summs(model_log_dependent, interaction_model_log_dependent,
+export_summs(model_log_dependent, interaction_model_log_dependent3,
              error_format = "(p = {p.value})",
              error_pos = "same",
              model.names = c("Model 4",
@@ -757,11 +757,15 @@ export_summs(model_log_dependent, interaction_model_log_dependent,
 ```
 
 ```{r}
-interact_plot(interaction_model_log_dependent, pred = log2_pct_moved, modx = type,
+interact_plot(interaction_model_log_dependent3, pred = log2_pct_sf_home, modx = log2_pct_moved,
               interval = TRUE) +
   scale_x_continuous(breaks = breaks <- c(-6, -4, -2, 0, 2),
-                     labels = round(breaks + mean(data_log$log2_pct_moved, na.rm = TRUE)),
+                     labels = round(breaks + mean(data_log$log2_pct_sf_home, na.rm = TRUE)),
                      name = "Log of People Moved") +
   scale_y_continuous(name = "Predicted Change")
+```
+```{r}
+effect_plot(model_log_dependent, pred = log2_pct_sf_home, interval = TRUE)
+
 ```
 
