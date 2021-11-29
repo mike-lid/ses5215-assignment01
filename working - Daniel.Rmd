@@ -762,7 +762,7 @@ interact_plot(interaction_model_log_dependent3, pred = log2_pct_sf_home, modx = 
   scale_x_continuous(breaks = breaks <- c(-6, -4, -2, 0, 2),
                      labels = round(breaks + mean(data_log$log2_pct_sf_home, na.rm = TRUE)),
                      name = "Log of People Moved") +
-  scale_y_continuous(name = "Predicted Change")
+  scale_y_continuous(name = "Predicted Change") 
 ```
 ```{r}
 effect_plot(model_log_dependent, pred = log2_pct_sf_home, interval = TRUE)
