@@ -257,7 +257,7 @@ export_summs(full_model, model_scaled,
 ## Logarithimic transformations
 ```{r, message = FALSE, warning = FALSE, echo = FALSE}
 #logging the percentage of sf homes did not seem to affect it
-data_log <- data %>%
+data_scaled_log <- data_scaled %>%
   mutate(log2_avg_sf_home_val = log(avg_sf_home_val, base = 2),
          log2_pct_moved = log(pct_moved, base = 2),
          log2_pct_sf_home = log(pct_sf_home, base = 2))
