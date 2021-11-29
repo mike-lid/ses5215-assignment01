@@ -570,7 +570,6 @@ data_log <- data %>%
 ```
 
 
-
 ```{r}
 coeff_names_logged <- c("Constant" = "(Intercept)",
                  
@@ -600,6 +599,8 @@ export_summs(full_model, centered_model, centered_model_scaled, model_log, model
              coefs = coeff_names_logged)
 
 ```
+
+## interactions
 
 
 ```{r}
@@ -768,4 +769,5 @@ interact_plot(interaction_model_log_dependent3, pred = log2_pct_sf_home, modx = 
 effect_plot(model_log_dependent, pred = log2_pct_sf_home, interval = TRUE)
 
 ```
-
+*DELETE THIS BEFORE SUBMISSION:*
+The interaction plot is describing how the effectiveness *(ability for a variable to predict the average SDDU price)* of "log of people moved" changes when it interacts with the classification type of a census tract.
