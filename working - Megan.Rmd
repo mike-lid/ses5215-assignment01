@@ -318,4 +318,5 @@ export_summs(centered_model_scaled_log, interaction_model,
              model.names = c("Model 4",
                              "Model 5"))
 ```
-1. Interacting percent single family homes and majority white -- doesn't change R model 
+
+
