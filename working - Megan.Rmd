@@ -319,4 +319,30 @@ export_summs(centered_model_scaled_log, interaction_model,
                              "Model 5"))
 ```
 
+## Assignment 6 Write-ups
+```{r}
+coeff_names_interaction <- c("Constant" = "(Intercept)",
+                             
+                 "Percentage of SDDU" = "pct_sf_home",
+                 "Percentage of SDDU (Logged)" = "log2_pct_sf_home",
+                 "Percentage of Moved (5% Increments)" = "pct_moved_5",
+                 "Percentage of Moved" = "pct_moved",
+                 "Percentage of Moved (Logged)" = "log2_pct_moved",
+                 "Majority White Classification" = "maj_whiteTRUE",
+                 "Large fringe metro" = "typeLarge fringe metro",
+                 "Medium metro" = "typeMedium metro",
+                 "Small metro" = "typeSmall metro",
+                 "Micropolitan" = "typeMicropolitan")
+                   
+                   
+interaction_model_log_dependent <- lm(log2_avg_sf_home_val ~ log2_pct_sf_home + log2_pct_moved + maj_white + type + log2_pct_sf_home*log2_pct_moved, data_log)
+                                      
+export_summs(model_log_dependent, interaction_model_log_dependent,
+             error_format = "(p = {p.value})",
+             error_pos = "same",
+             model.names = c("Model 4",
+                             "Model 5"))
+```
+We experimented with various interactions before selecting this model. When we modeled how the racial makeup (majority white or not) of a census tract affects the relationship between percentage of SDDUs and SDDU home values, the model fit (R2) did not increase. When we included interactions among all variables, we did get a model with an R2 value of 0.31. However, at that point the model had become overly complex and the results were becoming less and less meaningful. That model was sacrificing clarity and conciseness for one one-hundredth better fit.
 
+This model, with an R2 value of 0.30, shows how the relationship between the log of SDDU home values and the log of percent of SDDUs in a census tract is affected by the log of percentage of people who moved to the census tract that year. In this model, the log of the percentage of SDDUs in a census tract is significant and negative, and the interaction with  the log of percentage of people who moved is also significant and negative. Therefore, the percentage of people who moved has an increasing effect. 
