@@ -683,3 +683,4 @@ export_summs(model_log_dependent, interaction_model_log_dependent3,
              model.names = c("Model 4",
                              "Model 5"))
 ```
+
