@@ -600,11 +600,13 @@ export_summs(full_model, centered_model, centered_model_scaled, model_log, model
 
 ```
 
-# interactions
-Our preferred model from above took the log of all the continuous variables in our data set before running a multivariate regression analysis. From this model, we see that the higher percentages of residents who moved in the year are associated with higher average prices of SDDUs in a given census tract. In addition, when the percentage of residents who moved in a census tract is controlled, census tracts that are majority white tend to have higher average prices of SDDUs. Thus, the following describes the interaction modelling we did to see how the model fit changes when various variables are interacted **(ie. when we consider how the presence of one variable may overlap in their )**
+# **interactions**
+Our preferred model from above took the log of all the continuous variables in the multivariate regression analysis. From here on out, when we refer to a continuous variable, we are actually referring to the log of that variable.
 
-## interacting the percentage of SDDUs with racial makeup
-When we modeled how the racial makeup (majority white or not) of a census tract affects the relationship between percentage of SDDUs and the log of SDDU home values, the model fit (R2) did not increase.
+From this model, we see that a higher percentages of people who moved in a given census tract was associated with higher average prices of SDDUs. In addition, when the percentage of residents who moved is controlled, census tracts that are majority white tend to have higher average prices of SDDUs. Thus, we realized we should run interaction models to see if any of these relationships are affected by the presence of another variable.
+
+## **interacting the percentage of SDDUs with racial makeup**
+When we modeled how the racial makeup (majority white or not) of a census tract affects the relationship between percentage of SDDUs and the average price of SDDUs, the model fit (R2) did not increase.
 ```{r}
 coeff_names_interaction <- c("Constant" = "(Intercept)",
                              
@@ -625,13 +627,13 @@ interaction_model_log_dependent <- lm(log2_avg_sf_home_val ~ log2_pct_sf_home + 
 export_summs(model_log_dependent, interaction_model_log_dependent,
              error_format = "(p = {p.value})",
              error_pos = "same",
-             model.names = c("Model 4",
-                             "Model 5"))
+             model.names = c("Initial",
+                             "Interaction of Percentage of SDDUs with Majority White"))
 ```
 
 
-## interacting all variables
-When we included interactions among all variables, we did get a model with an R2 value of 0.31. However, at that point the model had become overly complex and the results were becoming less and less meaningful. That model was sacrificing clarity and conciseness for one one-hundredth better fit.
+## **interacting all variables**
+When we included interactions among all variables, we did get a model with an R2 value of 0.32. However, at this point the model has become overly complex and the results become less and less meaningful. This model (below) sacrifices clarity and conciseness for a marginally better fit.
 
 ```{r interacting all variables, message = FALSE, warning = FALSE, echo = FALSE}
 coeff_names_interaction <- c("Constant" = "(Intercept)",
@@ -653,12 +655,12 @@ interaction_model_log_dependent <- lm(log2_avg_sf_home_val ~ log2_pct_sf_home + 
 export_summs(model_log_dependent, interaction_model_log_dependent,
              error_format = "(p = {p.value})",
              error_pos = "same",
-             model.names = c("Model 4",
-                             "Model 5"))
+             model.names = c("Initial",
+                             "Interaction of All Variables"))
 ```
 
-## interacting the log of the percentage of people who moved with the percentage of SDDUs
-The model we ultimately selected has an R2 value of 0.30. It shows how the relationship between the log of SDDU home values and the log of percent of SDDUs in a census tract *is affected* by the log of percentage of people who moved to the census tract that year. In this model, the log of the percentage of SDDUs in a census tract is significant and negative, and the interaction with the log of percentage of people who moved is also significant and negative. Therefore, the percentage of people who moved has an increasing effect. This means that the negative correlation between the log of SDDU home values and percentage of SDDUs gets even stronger with each increased unit of log of percentage of people who moved. 
+## **preferred model: interacting the percentage of people who moved with the percentage of SDDUs**
+The model we ultimately selected has an R2 value of 0.30. It shows how the relationship between the average price of SDDUs and the percentage of SDDUs in a census tract *is affected* by the percentage of people who moved to the census tract that year. In this model, the percentage of SDDUs in a census tract is significant and negative, and the interaction with the percentage of people who moved is also significant and negative. Therefore, the percentage of people who moved has an increasing effect. This means that the negative correlation between the SDDU home values and percentage of SDDUs gets even stronger with each increased unit of percentage of people who moved. 
 
 ```{r}
 coeff_names_interaction <- c("Constant" = "(Intercept)",
@@ -680,7 +682,15 @@ interaction_model_log_dependent3 <- lm(log2_avg_sf_home_val ~ log2_pct_sf_home +
 export_summs(model_log_dependent, interaction_model_log_dependent3,
              error_format = "(p = {p.value})",
              error_pos = "same",
-             model.names = c("Model 4",
-                             "Model 5"))
+             model.names = c("Initial",
+                             "Preferred Model"))
 ```
 
+```{r}
+interact_plot(interaction_model_log_dependent3, pred = log2_pct_sf_home, modx = log2_pct_moved,
+              interval = TRUE) +
+  scale_x_continuous(breaks = breaks <- c(-6, -4, -2, 0, 2),
+                     labels = round(breaks + mean(data_log$log2_pct_sf_home, na.rm = TRUE)),
+                     name = "Log of People Moved") +
+  scale_y_continuous(name = "Predicted Change") 
+```
