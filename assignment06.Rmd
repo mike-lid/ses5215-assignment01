@@ -600,10 +600,10 @@ export_summs(full_model, centered_model, centered_model_scaled, model_log, model
 
 ```
 
-## interactions
+# interactions
 Our preferred model from above took the log of all the continuous variables in our data set before running a multivariate regression analysis. From this model, we see that the higher percentages of residents who moved in the year are associated with higher average prices of SDDUs in a given census tract. In addition, when the percentage of residents who moved in a census tract is controlled, census tracts that are majority white tend to have higher average prices of SDDUs. Thus, the following describes the interaction modelling we did to see how the model fit changes when various variables are interacted **(ie. when we consider how the presence of one variable may overlap in their )**
 
-###interacting the percentage of SDDUs with racial makeup
+## interacting the percentage of SDDUs with racial makeup
 When we modeled how the racial makeup (majority white or not) of a census tract affects the relationship between percentage of SDDUs and the log of SDDU home values, the model fit (R2) did not increase.
 ```{r}
 coeff_names_interaction <- c("Constant" = "(Intercept)",
@@ -630,7 +630,7 @@ export_summs(model_log_dependent, interaction_model_log_dependent,
 ```
 
 
-#interacting all variables
+## interacting all variables
 When we included interactions among all variables, we did get a model with an R2 value of 0.31. However, at that point the model had become overly complex and the results were becoming less and less meaningful. That model was sacrificing clarity and conciseness for one one-hundredth better fit.
 
 ```{r interacting all variables, message = FALSE, warning = FALSE, echo = FALSE}
@@ -657,7 +657,7 @@ export_summs(model_log_dependent, interaction_model_log_dependent,
                              "Model 5"))
 ```
 
-###interacting the log of the percentage of people who moved with the percentage of SDDUs
+## interacting the log of the percentage of people who moved with the percentage of SDDUs
 The model we ultimately selected has an R2 value of 0.30. It shows how the relationship between the log of SDDU home values and the log of percent of SDDUs in a census tract *is affected* by the log of percentage of people who moved to the census tract that year. In this model, the log of the percentage of SDDUs in a census tract is significant and negative, and the interaction with the log of percentage of people who moved is also significant and negative. Therefore, the percentage of people who moved has an increasing effect. This means that the negative correlation between the log of SDDU home values and percentage of SDDUs gets even stronger with each increased unit of log of percentage of people who moved. 
 
 ```{r}
