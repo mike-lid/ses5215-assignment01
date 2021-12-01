@@ -1,5 +1,6 @@
 ---
-title: "**What Influences the Value of Single, Detached Dwelling Units?**"
+title: "**Is the Price Right?**"
+subtitle: "What Influences the Value of Single, Detached Dwelling Units in Massachusetts"
 author: "Daniel + Megan + Mike"
 date: "29 November 2021"
 output: 
