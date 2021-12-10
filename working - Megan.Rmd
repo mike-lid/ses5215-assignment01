@@ -5,6 +5,19 @@ date: "10/21/2021"
 output: html_document
 ---
 
+### Final Report - Background Draft
+
+Our study, specific to Massachusetts, builds on a wealth of prior research exploring relationships between housing typology and economic indicators such as home values. In their 2018 study, Chakraborty and McMillan found a positive (but varied) correlation between housing type and neighborhood stability across 14 MSAs throughout the 2008 financial crisis: neighborhoods with higher diversity in housing stock had lower foreclosure and sales rates (Chakraborty et al 2018). 
+
+Our analysis also included other variables that previous research has demonstrated are relevant to understanding single-family home values. We included county typology (urban, suburban, rural, etc.), because hedonic models have shown a relationship between home values and distance to a city center. In a 2006 study, longer distance from the metropolitan center were correlated with lower property values in the magnitude of 1.82%. However, this relationship was found to be highly income dependent; devaluation associated with distance is higher for low-income individuals than for high-income individuals (Kestens et al. 2006). Lastly, our study also includes racial makeup of a census tract. In a report published by the Brookings Institute, researcher Andre Perry found that, holding structural qualities of the home and neighborhood amenities equal, owner-occupied homes in majority Black neighborhoods are undervalued by $48,000 per home, due to racial bias in various aspects of the housing market. Therefore, we introduced the variable of whether or not a census tract was majority white, as a rough proxy for racial diversity. 
+
+- Chakraborty, Arnab and McMillan, Andrew, “Is Housing Diversity Good for Community Stability?: Evidence from the Housing Crisis,” *Journal of Planning Education and Research*, (2018), https://journals.sagepub.com/doi/10.1177/0739456X18810787
+- Kestens, Yan,  Theriault, Marius, and Des Rosiers  Francois, "Heterogeneity in hedonic modelling of house
+prices: looking at buyers’ household profiles," *Journal of Geographical Systems*, (2006), https://link.springer.com/article/10.1007/s10109-005-0011-8
+- Perry, Andre, Rothwell, Jonathan, and Harshbarger, David, "The Devaluation of Assets in Black Neighborhoods," *Brookings Institute*, (2018), https://www.brookings.edu/research/devaluation-of-assets-in-black-neighborhoods/.
+
+
+
 ```{r Loading libraries}
 
 library(tidyverse)
